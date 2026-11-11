@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Estimate collision severity – Mind the Crash</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script type="module" src="take-a-call_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="take-a-call_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="vendor/govuk/govuk-frontend.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<script>
+
+  document.documentElement.classList.add("govuk-template");
+
+  document.body.classList.add("govuk-template__body", "govuk-frontend-supported");
+
+</script>
+
+<a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+
+<header class="govuk-header">
+
+  <div class="govuk-header__container govuk-width-container">
+
+    <div class="govuk-header__logo">
+
+      <a href="#" class="govuk-header__link govuk-header__link--homepage">
+
+<span class="mtc-brand">Mind the Crash</span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+<section class="govuk-service-navigation" aria-label="Service information">
+
+  <div class="govuk-width-container">
+
+    <div class="govuk-service-navigation__container">
+
+      <span class="govuk-service-navigation__service-name">
+
+        <a href="take-a-call.html" class="govuk-service-navigation__link">Road collision triage</a>
+
+      </span>
+
+      <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+
+        <ul class="govuk-service-navigation__list">
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="take-a-call.html">Take a call</a></li>
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="how-it-works.html">How the estimate works</a></li>
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="what-matters.html">What the model listens to</a></li>
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="where-serious.html">Where collisions turn serious</a></li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+
+  for (const a of document.querySelectorAll(".govuk-service-navigation__item a")) {
+
+    if (location.pathname.endsWith(a.getAttribute("href"))) {
+
+      a.parentElement.classList.add("govuk-service-navigation__item--active");
+
+      a.setAttribute("aria-current", "page");
+
+    }
+
+  }
+
+</script>
+
+<div class="govuk-width-container">
+
+  <div class="govuk-phase-banner">
+
+    <p class="govuk-phase-banner__content">
+
+      <strong class="govuk-tag govuk-phase-banner__content__tag">Demo</strong>
+
+      <span class="govuk-phase-banner__text">University project demo built on open STATS19 data. Not an official GOV.UK or emergency service.</span>
+
+    </p>
+
+  </div>
+
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+
+
+
+
+
+<div class="cell hidden">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="8" data-source-offset="-0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 7;"><span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { assess<span class="op">,</span> emptyAnswers } <span class="im">from</span> <span class="st">"./js/call.js"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { radios<span class="op">,</span> counters<span class="op">,</span> button } <span class="im">from</span> <span class="st">"./js/govuk-inputs.js"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/trees.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/meta.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ages <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/ages.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>locations <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/locations.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>DONT_KNOW <span class="op">=</span> [<span class="st">"Don't know"</span><span class="op">,</span> <span class="kw">null</span>]</span></code></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<span class="govuk-caption-m">Emergency call handling – internal tool</span>
+<h1 class="govuk-heading-l">Estimate collision severity</h1>
+<div class="call-layout">
+<div class="call-form">
+<div class="call-head">
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="29" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 28;"><span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div class="call-bar"&gt;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div&gt;&lt;span class="call-bar__key"&gt;Caller location&lt;/span&gt;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>loc<span class="op">.</span><span class="at">area</span><span class="sc">}</span><span class="vs">&lt;/strong&gt;, </span><span class="sc">${</span>loc<span class="op">.</span><span class="at">urban</span> <span class="op">?</span> <span class="st">"urban area"</span> <span class="op">:</span> <span class="st">"rural area"</span><span class="sc">}</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span class="call-bar__note"&gt;from the caller's phone&lt;/span&gt;&lt;/div&gt;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div&gt;&lt;span class="call-bar__key"&gt;Time of call&lt;/span&gt;</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>now<span class="op">.</span><span class="fu">toLocaleTimeString</span>(<span class="st">"en-GB"</span><span class="op">,</span> {<span class="dt">hour</span><span class="op">:</span> <span class="st">"2-digit"</span><span class="op">,</span> <span class="dt">minute</span><span class="op">:</span> <span class="st">"2-digit"</span>})<span class="sc">}</span><span class="vs">&lt;/strong&gt;&lt;/div&gt;</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="40" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 39;"><span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>viewof nuova <span class="op">=</span> <span class="fu">button</span>(<span class="st">"Start a new call"</span><span class="op">,</span> <span class="st">"btn-newcall"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell hidden">
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="50" data-source-offset="-94"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 49;"><span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>loc <span class="op">=</span> (nuova<span class="op">,</span> locations[<span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">random</span>() <span class="op">*</span> locations<span class="op">.</span><span class="at">length</span>)])</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>now <span class="op">=</span> (nuova<span class="op">,</span> <span class="kw">new</span> <span class="bu">Date</span>())</span></code></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="box">
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="58" data-source-offset="-0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 57;"><span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>viewof v <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">counters</span>(<span class="st">"Vehicles involved"</span><span class="op">,</span> [</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"auto"</span><span class="op">,</span> <span class="st">"Cars"</span>]<span class="op">,</span> [<span class="st">"moto_big"</span><span class="op">,</span> <span class="st">"Motorcycles over 125cc"</span>]<span class="op">,</span> [<span class="st">"moto_small"</span><span class="op">,</span> <span class="st">"Motorcycles up to 125cc"</span>]<span class="op">,</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"bici"</span><span class="op">,</span> <span class="st">"Pedal cycles"</span>]<span class="op">,</span> [<span class="st">"altri"</span><span class="op">,</span> <span class="st">"Vans, lorries or buses"</span>]]))</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>viewof c <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">counters</span>(<span class="st">"Casualties"</span><span class="op">,</span> [</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"auto"</span><span class="op">,</span> <span class="st">"In a car"</span>]<span class="op">,</span> [<span class="st">"due_ruote"</span><span class="op">,</span> <span class="st">"On a motorcycle or bicycle"</span>]<span class="op">,</span> [<span class="st">"pedoni"</span><span class="op">,</span> <span class="st">"Pedestrians"</span>]<span class="op">,</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"furgone"</span><span class="op">,</span> <span class="st">"In a van"</span>]]))</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="box">
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="72" data-source-offset="-0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 71;"><span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>viewof f_attraversa <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"If a pedestrian was hurt, were they crossing the road?"</span><span class="op">,</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"Yes"</span><span class="op">,</span> <span class="kw">true</span>]<span class="op">,</span> [<span class="st">"No"</span><span class="op">,</span> <span class="kw">false</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>viewof eta <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Age of the casualties"</span><span class="op">,</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"Child"</span><span class="op">,</span> <span class="st">"bambino"</span>]<span class="op">,</span> [<span class="st">"Adult"</span><span class="op">,</span> <span class="st">"adulto"</span>]<span class="op">,</span> [<span class="st">"Older person"</span><span class="op">,</span> <span class="st">"anziano"</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>viewof urto <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Type of impact"</span><span class="op">,</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"Head-on"</span><span class="op">,</span> <span class="st">"frontale"</span>]<span class="op">,</span> [<span class="st">"Rear-end"</span><span class="op">,</span> <span class="st">"tamponamento"</span>]<span class="op">,</span> [<span class="st">"Side"</span><span class="op">,</span> <span class="st">"laterale"</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>viewof limite <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Speed limit"</span><span class="op">,</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">20</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">50</span><span class="op">,</span> <span class="dv">60</span><span class="op">,</span> <span class="dv">70</span>]<span class="op">.</span><span class="fu">map</span>((s) <span class="kw">=&gt;</span> [<span class="vs">`</span><span class="sc">${</span>s<span class="sc">}</span><span class="vs"> mph`</span><span class="op">,</span> s])<span class="op">,</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> loc<span class="op">.</span><span class="at">speed_limit</span><span class="op">,</span> <span class="dt">hint</span><span class="op">:</span> <span class="st">"Taken from the caller's location. Change it if the caller says otherwise."</span>}))</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<details class="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">More about the collision</span>
+  </summary>
+  <div class="govuk-details__text">
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="93" data-source-offset="-0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 92;"><span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>viewof manovra <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"What were the vehicles doing?"</span><span class="op">,</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"All going ahead"</span><span class="op">,</span> <span class="st">"dritto"</span>]<span class="op">,</span> [<span class="st">"One was turning"</span><span class="op">,</span> <span class="st">"svolta"</span>]<span class="op">,</span> [<span class="st">"One was stopped or slowing"</span><span class="op">,</span> <span class="st">"fermo"</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>viewof uscita <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Did a vehicle leave the road?"</span><span class="op">,</span></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"No"</span><span class="op">,</span> <span class="st">"no"</span>]<span class="op">,</span> [<span class="st">"Yes"</span><span class="op">,</span> <span class="st">"si"</span>]<span class="op">,</span> [<span class="st">"Yes, and hit a tree"</span><span class="op">,</span> <span class="st">"albero"</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>viewof ribaltato <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Did a vehicle overturn?"</span><span class="op">,</span> [[<span class="st">"No"</span><span class="op">,</span> <span class="st">"no"</span>]<span class="op">,</span> [<span class="st">"Yes"</span><span class="op">,</span> <span class="st">"si"</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>viewof luce <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Light"</span><span class="op">,</span></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"Daylight"</span><span class="op">,</span> <span class="st">"giorno"</span>]<span class="op">,</span> [<span class="st">"Dark, street lights on"</span><span class="op">,</span> <span class="st">"buio_illuminato"</span>]<span class="op">,</span> [<span class="st">"Dark, no street lights"</span><span class="op">,</span> <span class="st">"buio_non"</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>viewof strada <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Type of road"</span><span class="op">,</span></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"Motorway or dual carriageway"</span><span class="op">,</span> <span class="st">"superstrada"</span>]<span class="op">,</span> [<span class="st">"Main road"</span><span class="op">,</span> <span class="st">"principale"</span>]<span class="op">,</span> [<span class="st">"Local road"</span><span class="op">,</span> <span class="st">"locale"</span>]<span class="op">,</span> DONT_KNOW]))</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>viewof incrocio <span class="op">=</span> (nuova<span class="op">,</span> <span class="fu">radios</span>(<span class="st">"Was it at a junction?"</span><span class="op">,</span></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>  [[<span class="st">"No"</span><span class="op">,</span> <span class="st">"no"</span>]<span class="op">,</span> [<span class="st">"Yes, traffic lights"</span><span class="op">,</span> <span class="st">"semaforo"</span>]<span class="op">,</span> [<span class="st">"Yes, give way or uncontrolled"</span><span class="op">,</span> <span class="st">"precedenza"</span>]<span class="op">,</span> DONT_KNOW]))</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+  </div>
+</details>
+</div>
+</div>
+<div class="call-result">
+<div class="cell hidden">
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="120" data-source-offset="-0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 119;"><span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a>veicoli <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(v)<span class="op">.</span><span class="fu">some</span>((n) <span class="kw">=&gt;</span> n <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">?</span> v <span class="op">:</span> <span class="kw">null</span></span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a>feriti <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(c)<span class="op">.</span><span class="fu">some</span>((n) <span class="kw">=&gt;</span> n <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">?</span> {<span class="op">...</span>c<span class="op">,</span> <span class="dt">pedone_attraversa</span><span class="op">:</span> f_attraversa <span class="op">===</span> <span class="kw">true</span>} <span class="op">:</span> <span class="kw">null</span></span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a>answers <span class="op">=</span> ({<span class="op">...</span><span class="fu">emptyAnswers</span>()<span class="op">,</span> veicoli<span class="op">,</span> feriti<span class="op">,</span> eta<span class="op">,</span> urto<span class="op">,</span> limite<span class="op">,</span> manovra<span class="op">,</span> uscita<span class="op">,</span> ribaltato<span class="op">,</span> luce<span class="op">,</span> strada<span class="op">,</span> incrocio})</span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a>esito <span class="op">=</span> <span class="fu">assess</span>(model<span class="op">,</span> answers<span class="op">,</span> {meta<span class="op">,</span> ages<span class="op">,</span> loc<span class="op">,</span> now})</span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="co">// With no answers p sits on the threshold: no verdict until vehicles and casualties are known.</span></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>pronto <span class="op">=</span> veicoli <span class="op">!==</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> feriti <span class="op">!==</span> <span class="kw">null</span></span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a>LABELS <span class="op">=</span> ({<span class="dt">veicoli</span><span class="op">:</span> <span class="st">"Vehicles involved"</span><span class="op">,</span> <span class="dt">feriti</span><span class="op">:</span> <span class="st">"Casualties"</span><span class="op">,</span> <span class="dt">eta</span><span class="op">:</span> <span class="st">"Age of the casualties"</span><span class="op">,</span></span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>  <span class="dt">urto</span><span class="op">:</span> <span class="st">"Type of impact"</span><span class="op">,</span> <span class="dt">limite</span><span class="op">:</span> <span class="st">"Speed limit"</span><span class="op">,</span> <span class="dt">manovra</span><span class="op">:</span> <span class="st">"What the vehicles were doing"</span><span class="op">,</span></span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a>  <span class="dt">uscita</span><span class="op">:</span> <span class="st">"Leaving the road"</span><span class="op">,</span> <span class="dt">luce</span><span class="op">:</span> <span class="st">"Light"</span><span class="op">,</span> <span class="dt">ribaltato</span><span class="op">:</span> <span class="st">"Overturned vehicle"</span><span class="op">,</span></span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a>  <span class="dt">strada</span><span class="op">:</span> <span class="st">"Type of road"</span><span class="op">,</span> <span class="dt">incrocio</span><span class="op">:</span> <span class="st">"Junction"</span>})</span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> (x) <span class="kw">=&gt;</span> x<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)</span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a>signed <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>x <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">"+"</span> <span class="op">:</span> <span class="st">"−"</span><span class="sc">}${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(x)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span></span></code></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-8-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell hidden">
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="136" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 135;"><span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a>verdetto <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;</span></span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="govuk-panel </span><span class="sc">${</span>esito<span class="op">.</span><span class="at">grave</span> <span class="op">?</span> <span class="st">"govuk-panel--serious"</span> <span class="op">:</span> <span class="st">"govuk-panel--slight"</span><span class="sc">}</span><span class="vs">"&gt;</span></span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;h2 class="govuk-panel__title"&gt;</span><span class="sc">${</span>esito<span class="op">.</span><span class="at">grave</span> <span class="op">?</span> <span class="st">"▲ Serious"</span> <span class="op">:</span> <span class="st">"▼ Slight"</span><span class="sc">}</span><span class="vs">&lt;/h2&gt;</span></span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="govuk-panel__body"&gt;Probability of a serious collision: &lt;strong&gt;</span><span class="sc">${</span><span class="fu">num</span>(esito<span class="op">.</span><span class="at">p</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt;&lt;/div&gt;</span></span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="action"&gt;</span></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;h3 class="govuk-heading-s govuk-!-margin-bottom-2"&gt;What to do now&lt;/h3&gt;</span></span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>esito<span class="op">.</span><span class="at">grave</span></span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a>      <span class="op">?</span> <span class="fu">html</span><span class="vs">`&lt;ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0"&gt;</span></span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;li&gt;Dispatch an ambulance as a &lt;strong&gt;Category 2&lt;/strong&gt; emergency&lt;/li&gt;</span></span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;li&gt;Alert roads policing&lt;/li&gt;</span></span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a><span class="vs">          </span><span class="sc">${</span>loc<span class="op">.</span><span class="at">urban</span> <span class="op">?</span> <span class="st">""</span> <span class="op">:</span> <span class="fu">html</span><span class="vs">`&lt;li&gt;Consider the air ambulance: rural location&lt;/li&gt;`</span><span class="sc">}</span></span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;/ul&gt;`</span></span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span> <span class="fu">html</span><span class="vs">`&lt;ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0"&gt;</span></span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;li&gt;Dispatch an ambulance as a &lt;strong&gt;Category 3&lt;/strong&gt; response&lt;/li&gt;</span></span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;li&gt;Send police to manage the scene&lt;/li&gt;</span></span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;/ul&gt;`</span><span class="sc">}</span></span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="govuk-body-s govuk-!-margin-top-2 govuk-!-margin-bottom-0"&gt;</span></span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a><span class="vs">      Upgrade to &lt;strong&gt;Category 1&lt;/strong&gt; at once if the caller reports someone not breathing, unconscious or bleeding</span></span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a><span class="vs">      heavily. The model has never heard of any of these.&lt;/p&gt;</span></span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="meter" role="img"</span></span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a><span class="vs">       aria-label="Probability </span><span class="sc">${</span><span class="fu">num</span>(esito<span class="op">.</span><span class="at">p</span>)<span class="sc">}</span><span class="vs">, threshold </span><span class="sc">${</span>meta<span class="op">.</span><span class="at">threshold</span><span class="sc">}</span><span class="vs">"&gt;</span></span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="meter__fill" style="width: </span><span class="sc">${</span>esito<span class="op">.</span><span class="at">p</span> <span class="op">*</span> <span class="dv">100</span><span class="sc">}</span><span class="vs">%"&gt;&lt;/div&gt;</span></span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="meter__threshold" style="left: </span><span class="sc">${</span>meta<span class="op">.</span><span class="at">threshold</span> <span class="op">*</span> <span class="dv">100</span><span class="sc">}</span><span class="vs">%"&gt;&lt;/div&gt;</span></span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;p class="govuk-body-s"&gt;Serious from </span><span class="sc">${</span>meta<span class="op">.</span><span class="at">threshold</span><span class="sc">}</span><span class="vs"> upwards&lt;/p&gt;</span></span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;h3 class="govuk-heading-s"&gt;What moved the estimate&lt;/h3&gt;</span></span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;ul class="govuk-list reasons"&gt;</span></span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>esito<span class="op">.</span><span class="at">reasons</span><span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">.</span><span class="fu">map</span>((r) <span class="kw">=&gt;</span> <span class="fu">html</span><span class="vs">`&lt;li&gt;&lt;strong&gt;</span><span class="sc">${</span><span class="fu">signed</span>(r<span class="op">.</span><span class="at">delta</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt; </span><span class="sc">${</span>LABELS[r<span class="op">.</span><span class="at">q</span>]<span class="sc">}</span><span class="vs">&lt;/li&gt;`</span>)<span class="sc">}</span></span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/ul&gt;</span></span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;p class="govuk-body-s govuk-!-margin-bottom-0" style="color: #505a5f"&gt;</span></span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a><span class="vs">    This estimate was produced by </span><span class="sc">${</span>model<span class="op">.</span><span class="at">trees</span><span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> decision trees, none of which has ever driven a car.</span></span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/p&gt;</span></span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span></span></code></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div id="ojs-cell-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="175" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 174;"><span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div class="result"&gt;</span></span>
+<span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">${</span>pronto <span class="op">?</span> verdetto <span class="op">:</span> <span class="fu">html</span><span class="vs">`&lt;div class="govuk-inset-text govuk-!-margin-0"&gt;</span></span>
+<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a><span class="vs">    Ask the caller about the vehicles and the casualties.</span></span>
+<span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a><span class="vs">    The model is patient. The caller may not be.&lt;/div&gt;`</span><span class="sc">}</span></span>
+<span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;p class="govuk-body-s"&gt;Estimate based on </span><span class="sc">${</span>esito<span class="op">.</span><span class="at">answered</span><span class="sc">}</span><span class="vs"> of </span><span class="sc">${</span>esito<span class="op">.</span><span class="at">total</span><span class="sc">}</span><span class="vs"> answers.&lt;/p&gt;</span></span>
+<span id="cb10-180"><a href="#cb10-180" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-10" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+  </main>
+  <div class="feedback" id="feedback">
+    <p class="govuk-body govuk-!-margin-bottom-0">
+      <strong>Is this page useful?</strong>
+      <button type="button" class="govuk-button govuk-button--secondary feedback__btn">Yes</button>
+      <button type="button" class="govuk-button govuk-button--secondary feedback__btn">No</button>
+    </p>
+  </div>
+</div>
+<footer class="govuk-footer">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-body-s govuk-!-margin-bottom-0">
+          Model: XGBoost trained on STATS19 road safety data, Department for Transport, 2021–2025.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+  document.getElementById("feedback").addEventListener("click", (e) => {
+    if (!e.target.closest(".feedback__btn")) return;
+    e.currentTarget.innerHTML =
+      '<p class="govuk-body govuk-!-margin-bottom-0">Thank you for your feedback. It has been carefully filed.</p>';
+  });
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7IGFzc2VzcywgZW1wdHlBbnN3ZXJzIH0gZnJvbSBcIi4vanMvY2FsbC5qc1wiXG5pbXBvcnQgeyByYWRpb3MsIGNvdW50ZXJzLCBidXR0b24gfSBmcm9tIFwiLi9qcy9nb3Z1ay1pbnB1dHMuanNcIlxubW9kZWwgPSBGaWxlQXR0YWNobWVudChcImRhdGEvdHJlZXMuanNvblwiKS5qc29uKClcbm1ldGEgPSBGaWxlQXR0YWNobWVudChcImRhdGEvbWV0YS5qc29uXCIpLmpzb24oKVxuYWdlcyA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9hZ2VzLmpzb25cIikuanNvbigpXG5sb2NhdGlvbnMgPSBGaWxlQXR0YWNobWVudChcImRhdGEvbG9jYXRpb25zLmpzb25cIikuanNvbigpXG5ET05UX0tOT1cgPSBbXCJEb24ndCBrbm93XCIsIG51bGxdXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJodG1sYDxkaXYgY2xhc3M9XCJjYWxsLWJhclwiPlxuICA8ZGl2PjxzcGFuIGNsYXNzPVwiY2FsbC1iYXJfX2tleVwiPkNhbGxlciBsb2NhdGlvbjwvc3Bhbj5cbiAgICA8c3Ryb25nPiR7bG9jLmFyZWF9PC9zdHJvbmc+LCAke2xvYy51cmJhbiA/IFwidXJiYW4gYXJlYVwiIDogXCJydXJhbCBhcmVhXCJ9XG4gICAgPHNwYW4gY2xhc3M9XCJjYWxsLWJhcl9fbm90ZVwiPmZyb20gdGhlIGNhbGxlcidzIHBob25lPC9zcGFuPjwvZGl2PlxuICA8ZGl2PjxzcGFuIGNsYXNzPVwiY2FsbC1iYXJfX2tleVwiPlRpbWUgb2YgY2FsbDwvc3Bhbj5cbiAgICA8c3Ryb25nPiR7bm93LnRvTG9jYWxlVGltZVN0cmluZyhcImVuLUdCXCIsIHtob3VyOiBcIjItZGlnaXRcIiwgbWludXRlOiBcIjItZGlnaXRcIn0pfTwvc3Ryb25nPjwvZGl2PlxuPC9kaXY+YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIG51b3ZhID0gYnV0dG9uKFwiU3RhcnQgYSBuZXcgY2FsbFwiLCBcImJ0bi1uZXdjYWxsXCIpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBBIG5ldyBjYWxsOiBhIHJlYWwgaW5jaWRlbnQgbG9jYXRpb24gc3RhbmRzIGluIGZvciB0aGUgcGhvbmUgcGluZywgdGhlIGNsb2NrIGZvciB0aGUgdGltZS5cbmxvYyA9IChudW92YSwgbG9jYXRpb25zW01hdGguZmxvb3IoTWF0aC5yYW5kb20oKSAqIGxvY2F0aW9ucy5sZW5ndGgpXSlcbm5vdyA9IChudW92YSwgbmV3IERhdGUoKSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiB2ID0gKG51b3ZhLCBjb3VudGVycyhcIlZlaGljbGVzIGludm9sdmVkXCIsIFtcbiAgW1wiYXV0b1wiLCBcIkNhcnNcIl0sIFtcIm1vdG9fYmlnXCIsIFwiTW90b3JjeWNsZXMgb3ZlciAxMjVjY1wiXSwgW1wibW90b19zbWFsbFwiLCBcIk1vdG9yY3ljbGVzIHVwIHRvIDEyNWNjXCJdLFxuICBbXCJiaWNpXCIsIFwiUGVkYWwgY3ljbGVzXCJdLCBbXCJhbHRyaVwiLCBcIlZhbnMsIGxvcnJpZXMgb3IgYnVzZXNcIl1dKSlcbnZpZXdvZiBjID0gKG51b3ZhLCBjb3VudGVycyhcIkNhc3VhbHRpZXNcIiwgW1xuICBbXCJhdXRvXCIsIFwiSW4gYSBjYXJcIl0sIFtcImR1ZV9ydW90ZVwiLCBcIk9uIGEgbW90b3JjeWNsZSBvciBiaWN5Y2xlXCJdLCBbXCJwZWRvbmlcIiwgXCJQZWRlc3RyaWFuc1wiXSxcbiAgW1wiZnVyZ29uZVwiLCBcIkluIGEgdmFuXCJdXSkpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgZl9hdHRyYXZlcnNhID0gKG51b3ZhLCByYWRpb3MoXCJJZiBhIHBlZGVzdHJpYW4gd2FzIGh1cnQsIHdlcmUgdGhleSBjcm9zc2luZyB0aGUgcm9hZD9cIixcbiAgW1tcIlllc1wiLCB0cnVlXSwgW1wiTm9cIiwgZmFsc2VdLCBET05UX0tOT1ddKSlcbnZpZXdvZiBldGEgPSAobnVvdmEsIHJhZGlvcyhcIkFnZSBvZiB0aGUgY2FzdWFsdGllc1wiLFxuICBbW1wiQ2hpbGRcIiwgXCJiYW1iaW5vXCJdLCBbXCJBZHVsdFwiLCBcImFkdWx0b1wiXSwgW1wiT2xkZXIgcGVyc29uXCIsIFwiYW56aWFub1wiXSwgRE9OVF9LTk9XXSkpXG52aWV3b2YgdXJ0byA9IChudW92YSwgcmFkaW9zKFwiVHlwZSBvZiBpbXBhY3RcIixcbiAgW1tcIkhlYWQtb25cIiwgXCJmcm9udGFsZVwiXSwgW1wiUmVhci1lbmRcIiwgXCJ0YW1wb25hbWVudG9cIl0sIFtcIlNpZGVcIiwgXCJsYXRlcmFsZVwiXSwgRE9OVF9LTk9XXSkpXG52aWV3b2YgbGltaXRlID0gKG51b3ZhLCByYWRpb3MoXCJTcGVlZCBsaW1pdFwiLFxuICBbMjAsIDMwLCA0MCwgNTAsIDYwLCA3MF0ubWFwKChzKSA9PiBbYCR7c30gbXBoYCwgc10pLFxuICB7dmFsdWU6IGxvYy5zcGVlZF9saW1pdCwgaGludDogXCJUYWtlbiBmcm9tIHRoZSBjYWxsZXIncyBsb2NhdGlvbi4gQ2hhbmdlIGl0IGlmIHRoZSBjYWxsZXIgc2F5cyBvdGhlcndpc2UuXCJ9KSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBtYW5vdnJhID0gKG51b3ZhLCByYWRpb3MoXCJXaGF0IHdlcmUgdGhlIHZlaGljbGVzIGRvaW5nP1wiLFxuICBbW1wiQWxsIGdvaW5nIGFoZWFkXCIsIFwiZHJpdHRvXCJdLCBbXCJPbmUgd2FzIHR1cm5pbmdcIiwgXCJzdm9sdGFcIl0sIFtcIk9uZSB3YXMgc3RvcHBlZCBvciBzbG93aW5nXCIsIFwiZmVybW9cIl0sIERPTlRfS05PV10pKVxudmlld29mIHVzY2l0YSA9IChudW92YSwgcmFkaW9zKFwiRGlkIGEgdmVoaWNsZSBsZWF2ZSB0aGUgcm9hZD9cIixcbiAgW1tcIk5vXCIsIFwibm9cIl0sIFtcIlllc1wiLCBcInNpXCJdLCBbXCJZZXMsIGFuZCBoaXQgYSB0cmVlXCIsIFwiYWxiZXJvXCJdLCBET05UX0tOT1ddKSlcbnZpZXdvZiByaWJhbHRhdG8gPSAobnVvdmEsIHJhZGlvcyhcIkRpZCBhIHZlaGljbGUgb3ZlcnR1cm4/XCIsIFtbXCJOb1wiLCBcIm5vXCJdLCBbXCJZZXNcIiwgXCJzaVwiXSwgRE9OVF9LTk9XXSkpXG52aWV3b2YgbHVjZSA9IChudW92YSwgcmFkaW9zKFwiTGlnaHRcIixcbiAgW1tcIkRheWxpZ2h0XCIsIFwiZ2lvcm5vXCJdLCBbXCJEYXJrLCBzdHJlZXQgbGlnaHRzIG9uXCIsIFwiYnVpb19pbGx1bWluYXRvXCJdLCBbXCJEYXJrLCBubyBzdHJlZXQgbGlnaHRzXCIsIFwiYnVpb19ub25cIl0sIERPTlRfS05PV10pKVxudmlld29mIHN0cmFkYSA9IChudW92YSwgcmFkaW9zKFwiVHlwZSBvZiByb2FkXCIsXG4gIFtbXCJNb3RvcndheSBvciBkdWFsIGNhcnJpYWdld2F5XCIsIFwic3VwZXJzdHJhZGFcIl0sIFtcIk1haW4gcm9hZFwiLCBcInByaW5jaXBhbGVcIl0sIFtcIkxvY2FsIHJvYWRcIiwgXCJsb2NhbGVcIl0sIERPTlRfS05PV10pKVxudmlld29mIGluY3JvY2lvID0gKG51b3ZhLCByYWRpb3MoXCJXYXMgaXQgYXQgYSBqdW5jdGlvbj9cIixcbiAgW1tcIk5vXCIsIFwibm9cIl0sIFtcIlllcywgdHJhZmZpYyBsaWdodHNcIiwgXCJzZW1hZm9yb1wiXSwgW1wiWWVzLCBnaXZlIHdheSBvciB1bmNvbnRyb2xsZWRcIiwgXCJwcmVjZWRlbnphXCJdLCBET05UX0tOT1ddKSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtOCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZlaWNvbGkgPSBPYmplY3QudmFsdWVzKHYpLnNvbWUoKG4pID0+IG4gPiAwKSA/IHYgOiBudWxsXG5mZXJpdGkgPSBPYmplY3QudmFsdWVzKGMpLnNvbWUoKG4pID0+IG4gPiAwKSA/IHsuLi5jLCBwZWRvbmVfYXR0cmF2ZXJzYTogZl9hdHRyYXZlcnNhID09PSB0cnVlfSA6IG51bGxcbmFuc3dlcnMgPSAoey4uLmVtcHR5QW5zd2VycygpLCB2ZWljb2xpLCBmZXJpdGksIGV0YSwgdXJ0bywgbGltaXRlLCBtYW5vdnJhLCB1c2NpdGEsIHJpYmFsdGF0bywgbHVjZSwgc3RyYWRhLCBpbmNyb2Npb30pXG5lc2l0byA9IGFzc2Vzcyhtb2RlbCwgYW5zd2Vycywge21ldGEsIGFnZXMsIGxvYywgbm93fSlcbi8vIFdpdGggbm8gYW5zd2VycyBwIHNpdHMgb24gdGhlIHRocmVzaG9sZDogbm8gdmVyZGljdCB1bnRpbCB2ZWhpY2xlcyBhbmQgY2FzdWFsdGllcyBhcmUga25vd24uXG5wcm9udG8gPSB2ZWljb2xpICE9PSBudWxsICYmIGZlcml0aSAhPT0gbnVsbFxuTEFCRUxTID0gKHt2ZWljb2xpOiBcIlZlaGljbGVzIGludm9sdmVkXCIsIGZlcml0aTogXCJDYXN1YWx0aWVzXCIsIGV0YTogXCJBZ2Ugb2YgdGhlIGNhc3VhbHRpZXNcIixcbiAgdXJ0bzogXCJUeXBlIG9mIGltcGFjdFwiLCBsaW1pdGU6IFwiU3BlZWQgbGltaXRcIiwgbWFub3ZyYTogXCJXaGF0IHRoZSB2ZWhpY2xlcyB3ZXJlIGRvaW5nXCIsXG4gIHVzY2l0YTogXCJMZWF2aW5nIHRoZSByb2FkXCIsIGx1Y2U6IFwiTGlnaHRcIiwgcmliYWx0YXRvOiBcIk92ZXJ0dXJuZWQgdmVoaWNsZVwiLFxuICBzdHJhZGE6IFwiVHlwZSBvZiByb2FkXCIsIGluY3JvY2lvOiBcIkp1bmN0aW9uXCJ9KVxubnVtID0gKHgpID0+IHgudG9GaXhlZCgyKVxuc2lnbmVkID0gKHgpID0+IGAke3ggPj0gMCA/IFwiK1wiIDogXCLiiJJcIn0ke01hdGguYWJzKHgpLnRvRml4ZWQoMil9YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC05IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmVyZGV0dG8gPSBodG1sYDxkaXY+XG4gIDxkaXYgY2xhc3M9XCJnb3Z1ay1wYW5lbCAke2VzaXRvLmdyYXZlID8gXCJnb3Z1ay1wYW5lbC0tc2VyaW91c1wiIDogXCJnb3Z1ay1wYW5lbC0tc2xpZ2h0XCJ9XCI+XG4gICAgPGgyIGNsYXNzPVwiZ292dWstcGFuZWxfX3RpdGxlXCI+JHtlc2l0by5ncmF2ZSA/IFwi4payIFNlcmlvdXNcIiA6IFwi4pa8IFNsaWdodFwifTwvaDI+XG4gICAgPGRpdiBjbGFzcz1cImdvdnVrLXBhbmVsX19ib2R5XCI+UHJvYmFiaWxpdHkgb2YgYSBzZXJpb3VzIGNvbGxpc2lvbjogPHN0cm9uZz4ke251bShlc2l0by5wKX08L3N0cm9uZz48L2Rpdj5cbiAgPC9kaXY+XG4gIDxkaXYgY2xhc3M9XCJhY3Rpb25cIj5cbiAgICA8aDMgY2xhc3M9XCJnb3Z1ay1oZWFkaW5nLXMgZ292dWstIS1tYXJnaW4tYm90dG9tLTJcIj5XaGF0IHRvIGRvIG5vdzwvaDM+XG4gICAgJHtlc2l0by5ncmF2ZVxuICAgICAgPyBodG1sYDx1bCBjbGFzcz1cImdvdnVrLWxpc3QgZ292dWstbGlzdC0tYnVsbGV0IGdvdnVrLSEtbWFyZ2luLWJvdHRvbS0wXCI+XG4gICAgICAgICAgPGxpPkRpc3BhdGNoIGFuIGFtYnVsYW5jZSBhcyBhIDxzdHJvbmc+Q2F0ZWdvcnkgMjwvc3Ryb25nPiBlbWVyZ2VuY3k8L2xpPlxuICAgICAgICAgIDxsaT5BbGVydCByb2FkcyBwb2xpY2luZzwvbGk+XG4gICAgICAgICAgJHtsb2MudXJiYW4gPyBcIlwiIDogaHRtbGA8bGk+Q29uc2lkZXIgdGhlIGFpciBhbWJ1bGFuY2U6IHJ1cmFsIGxvY2F0aW9uPC9saT5gfVxuICAgICAgICA8L3VsPmBcbiAgICAgIDogaHRtbGA8dWwgY2xhc3M9XCJnb3Z1ay1saXN0IGdvdnVrLWxpc3QtLWJ1bGxldCBnb3Z1ay0hLW1hcmdpbi1ib3R0b20tMFwiPlxuICAgICAgICAgIDxsaT5EaXNwYXRjaCBhbiBhbWJ1bGFuY2UgYXMgYSA8c3Ryb25nPkNhdGVnb3J5IDM8L3N0cm9uZz4gcmVzcG9uc2U8L2xpPlxuICAgICAgICAgIDxsaT5TZW5kIHBvbGljZSB0byBtYW5hZ2UgdGhlIHNjZW5lPC9saT5cbiAgICAgICAgPC91bD5gfVxuICAgIDxwIGNsYXNzPVwiZ292dWstYm9keS1zIGdvdnVrLSEtbWFyZ2luLXRvcC0yIGdvdnVrLSEtbWFyZ2luLWJvdHRvbS0wXCI+XG4gICAgICBVcGdyYWRlIHRvIDxzdHJvbmc+Q2F0ZWdvcnkgMTwvc3Ryb25nPiBhdCBvbmNlIGlmIHRoZSBjYWxsZXIgcmVwb3J0cyBzb21lb25lIG5vdCBicmVhdGhpbmcsIHVuY29uc2Npb3VzIG9yIGJsZWVkaW5nXG4gICAgICBoZWF2aWx5LiBUaGUgbW9kZWwgaGFzIG5ldmVyIGhlYXJkIG9mIGFueSBvZiB0aGVzZS48L3A+XG4gIDwvZGl2PlxuICA8ZGl2IGNsYXNzPVwibWV0ZXJcIiByb2xlPVwiaW1nXCJcbiAgICAgICBhcmlhLWxhYmVsPVwiUHJvYmFiaWxpdHkgJHtudW0oZXNpdG8ucCl9LCB0aHJlc2hvbGQgJHttZXRhLnRocmVzaG9sZH1cIj5cbiAgICA8ZGl2IGNsYXNzPVwibWV0ZXJfX2ZpbGxcIiBzdHlsZT1cIndpZHRoOiAke2VzaXRvLnAgKiAxMDB9JVwiPjwvZGl2PlxuICAgIDxkaXYgY2xhc3M9XCJtZXRlcl9fdGhyZXNob2xkXCIgc3R5bGU9XCJsZWZ0OiAke21ldGEudGhyZXNob2xkICogMTAwfSVcIj48L2Rpdj5cbiAgPC9kaXY+XG4gIDxwIGNsYXNzPVwiZ292dWstYm9keS1zXCI+U2VyaW91cyBmcm9tICR7bWV0YS50aHJlc2hvbGR9IHVwd2FyZHM8L3A+XG4gIDxoMyBjbGFzcz1cImdvdnVrLWhlYWRpbmctc1wiPldoYXQgbW92ZWQgdGhlIGVzdGltYXRlPC9oMz5cbiAgPHVsIGNsYXNzPVwiZ292dWstbGlzdCByZWFzb25zXCI+XG4gICAgJHtlc2l0by5yZWFzb25zLnNsaWNlKDAsIDMpLm1hcCgocikgPT4gaHRtbGA8bGk+PHN0cm9uZz4ke3NpZ25lZChyLmRlbHRhKX08L3N0cm9uZz4gJHtMQUJFTFNbci5xXX08L2xpPmApfVxuICA8L3VsPlxuICA8cCBjbGFzcz1cImdvdnVrLWJvZHktcyBnb3Z1ay0hLW1hcmdpbi1ib3R0b20tMFwiIHN0eWxlPVwiY29sb3I6ICM1MDVhNWZcIj5cbiAgICBUaGlzIGVzdGltYXRlIHdhcyBwcm9kdWNlZCBieSAke21vZGVsLnRyZWVzLmxlbmd0aH0gZGVjaXNpb24gdHJlZXMsIG5vbmUgb2Ygd2hpY2ggaGFzIGV2ZXIgZHJpdmVuIGEgY2FyLlxuICA8L3A+XG48L2Rpdj5gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTEwIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiaHRtbGA8ZGl2IGNsYXNzPVwicmVzdWx0XCI+XG4gICR7cHJvbnRvID8gdmVyZGV0dG8gOiBodG1sYDxkaXYgY2xhc3M9XCJnb3Z1ay1pbnNldC10ZXh0IGdvdnVrLSEtbWFyZ2luLTBcIj5cbiAgICBBc2sgdGhlIGNhbGxlciBhYm91dCB0aGUgdmVoaWNsZXMgYW5kIHRoZSBjYXN1YWx0aWVzLlxuICAgIFRoZSBtb2RlbCBpcyBwYXRpZW50LiBUaGUgY2FsbGVyIG1heSBub3QgYmUuPC9kaXY+YH1cbiAgPHAgY2xhc3M9XCJnb3Z1ay1ib2R5LXNcIj5Fc3RpbWF0ZSBiYXNlZCBvbiAke2VzaXRvLmFuc3dlcmVkfSBvZiAke2VzaXRvLnRvdGFsfSBhbnN3ZXJzLjwvcD5cbjwvZGl2PmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnbnVvdmEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgndicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdjJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2ZfYXR0cmF2ZXJzYScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdldGEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgndXJ0bycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdsaW1pdGUnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnbWFub3ZyYScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCd1c2NpdGEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncmliYWx0YXRvJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2x1Y2UnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnc3RyYWRhJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2luY3JvY2lvJykifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../..";
+window._ojs.paths.runtimeToRoot = "../../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+
+
+
+
+</body></html>

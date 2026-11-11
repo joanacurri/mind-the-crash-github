@@ -1,0 +1,156 @@
+---
+pagetitle: "Where collisions turn serious – Mind the Crash"
+---
+
+```{ojs}
+//| echo: false
+//| output: false
+import { radios } from "./js/govuk-inputs.js"
+map = FileAttachment("data/map.json").json()
+fmt = (x) => x.toLocaleString("en-GB")
+pct = (x) => `${Math.round(x * 100)}%`
+// Below these counts a hexagon's share is too noisy to colour.
+MIN_SERIOUS = 15
+RAMP = ["#fbe3e6", "#f2a7b2", "#e0607a", "#c8102e", "#7a0a1c"]
+MEASURES = ({
+  serious: {label: "Share of collisions that turned serious",
+            value: (d) => d.serious / d.n, shown: (d) => d.n >= map.min_hex},
+  missed: {label: "Share of serious collisions the model missed",
+           value: (d) => d.missed / d.serious, shown: (d) => d.serious >= MIN_SERIOUS},
+})
+rural = map.setting.find((d) => d.setting === "Rural")
+urban = map.setting.find((d) => d.setting === "Urban")
+```
+
+```{ojs}
+//| echo: false
+html`<span class="govuk-caption-m">Road collision triage</span>
+<h1 class="govuk-heading-l">Where collisions turn serious</h1>
+<p class="govuk-body-l">Collisions in rural areas turn serious more often:
+<strong>${pct(rural.serious / rural.n)}</strong> against ${pct(urban.serious / urban.n)} in towns.
+The model misses fewer of them: ${pct(rural.missed / rural.serious)} of serious rural collisions,
+against ${pct(urban.missed / urban.serious)} in towns.</p>`
+```
+
+::: {.map-layout}
+
+::: {.map-side}
+
+```{ojs}
+//| echo: false
+viewof misura = radios("Show", [[MEASURES.serious.label, "serious"], [MEASURES.missed.label, "missed"]],
+  {value: "serious"})
+```
+
+```{ojs}
+//| echo: false
+m = MEASURES[misura ?? "serious"]
+shown = map.hexes.filter(m.shown)
+// Five classes with equal numbers of coloured hexagons.
+breaks = {
+  const v = shown.map(m.value).sort((a, b) => a - b);
+  return [1, 2, 3, 4].map((k) => v[Math.floor(k * v.length / 5)]);
+}
+colour = (d) => m.shown(d) ? RAMP[breaks.filter((b) => m.value(d) >= b).length] : "#e5e8ef"
+html`<div class="legend">
+  <p class="govuk-body-s govuk-!-margin-bottom-2"><strong>${m.label}</strong></p>
+  ${RAMP.map((c, i) => html`<div class="legend__row"><span class="legend__swatch" style="background:${c}"></span>
+    ${i === 0 ? `under ${pct(breaks[0])}` : i === 4 ? `${pct(breaks[3])} or more`
+      : `${pct(breaks[i - 1])} to ${pct(breaks[i])}`}</div>`)}
+  <div class="legend__row"><span class="legend__swatch" style="background:#e5e8ef"></span>
+    Too few collisions to tell</div>
+</div>`
+```
+
+
+
+:::
+
+::: {.map-main}
+
+```{ojs}
+//| echo: false
+{
+  const R = map.radius;
+  const xs = map.hexes.map((d) => d.cx), ys = map.hexes.map((d) => -d.cy);
+  const [x0, x1] = [Math.min(...xs) - R, Math.max(...xs) + R];
+  const [y0, y1] = [Math.min(...ys) - R, Math.max(...ys) + R];
+  const corners = [30, 90, 150, 210, 270, 330].map((a) => [Math.cos(a * Math.PI / 180), Math.sin(a * Math.PI / 180)]);
+  const hex = (d) => corners.map(([c, s]) => `${(d.cx + R * c).toFixed(4)},${(-d.cy + R * s).toFixed(4)}`).join(" ");
+  const box = document.createElement("div");
+  box.className = "hexmap-box";
+  box.innerHTML = `<svg class="hexmap" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" role="img"
+    aria-label="Map of Great Britain: ${m.label.toLowerCase()}, by area">
+    ${map.hexes.map((d, i) => `<polygon data-i="${i}" data-areas="${d.place.areas.join("|")}" points="${hex(d)}" fill="${colour(d)}"/>`).join("")}
+  </svg><div class="hextip" hidden></div>`;
+  const tip = box.querySelector(".hextip");
+  box.addEventListener("pointermove", (e) => {
+    const d = map.hexes[e.target.dataset?.i];
+    if (!d) { tip.hidden = true; return; }
+    const r = box.getBoundingClientRect();
+    tip.innerHTML = `<strong>${d.place.districts.join(", ")}</strong>
+      <span class="hextip__area">Police force: ${d.place.area}</span>
+      ${fmt(d.n)} collisions of any severity<br>
+      ${fmt(d.serious)} serious (${pct(d.serious / d.n)})<br>
+      ${fmt(d.missed)} serious missed by the model${d.serious ? ` (${pct(d.missed / d.serious)})` : ""}
+      ${m.shown(d) ? "" : `<span class="hextip__note">Too few collisions to colour</span>`}`;
+    tip.hidden = false;
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    tip.style.left = `${x > r.width / 2 ? x - tip.offsetWidth - 16 : x + 16}px`;
+    tip.style.top = `${Math.max(0, y - tip.offsetHeight / 2)}px`;
+  });
+  box.addEventListener("pointerleave", () => { tip.hidden = true; });
+  return box;
+}
+```
+
+:::
+
+::: {.map-table}
+
+```{ojs}
+//| echo: false
+{
+  // Hovering an area lights up the hexagons where it recorded collisions.
+  const light = (area) => {
+    const svg = document.querySelector(".hexmap");
+    if (!svg) return;
+    svg.classList.toggle("hexmap--focus", Boolean(area));
+    for (const p of svg.querySelectorAll("polygon")) {
+      p.classList.toggle("is-lit", Boolean(area) && p.dataset.areas.split("|").includes(area));
+    }
+  };
+  const node = html`<div>
+  <h2 class="govuk-heading-s">By police force area</h2>
+    <table class="govuk-table counts">
+      <thead class="govuk-table__head"><tr class="govuk-table__row">
+        <th class="govuk-table__header">Area</th>
+        <th class="govuk-table__header govuk-table__header--numeric">Share</th>
+        <th class="govuk-table__header govuk-table__header--numeric">All collisions</th>
+      </tr></thead>
+      <tbody class="govuk-table__body">
+        ${[...map.areas].sort((a, b) => m.value(b) - m.value(a)).map((a) => html`<tr class="govuk-table__row" data-area="${a.area}">
+          <td class="govuk-table__cell">${a.area}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${pct(m.value(a))}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${fmt(a.n)}</td></tr>`)}
+      </tbody>
+    </table>
+</div>`;
+  node.addEventListener("pointerover", (e) => light(e.target.closest("tr[data-area]")?.dataset.area));
+  node.addEventListener("pointerleave", () => light(null));
+  return node;
+}
+```
+
+:::
+
+:::
+
+```{ojs}
+//| echo: false
+html`<h2 class="govuk-heading-m govuk-!-margin-top-6">How this map was made</h2>
+<p class="govuk-body">The ${fmt(map.n)} collisions held out from training, grouped into hexagons
+by where they happened. A collision counts as missed when it was serious and the model scored it
+below the threshold. Hexagons with fewer than ${map.min_hex} collisions, or fewer than
+${MIN_SERIOUS} serious ones on the second view, stay grey.</p>`
+```

@@ -1,0 +1,41 @@
+0
+casualty_type_Car
+vehicle_type_Motorcycle over 125cc
+latitude
+age_of_casualty_mean
+longitude
+number_of_vehicles
+number_of_casualties
+first_point_of_impact_Back
+vehicle_location_restricted_lane_Main carriageway
+speed_limit
+vehicle_manoeuvre_Going ahead
+skidding_and_overturning_None
+casualty_class_Driver or rider
+collision_injury_based
+first_point_of_impact_Front
+urban_or_rural_area_Urban
+woy
+sex_of_driver_Male
+casualty_class_Pedestrian
+vehicle_type_Pedal cycle
+vehicle_manoeuvre_Waiting or slowing
+vehicle_type_Motorcycle up to 125cc
+vehicle_leaving_carriageway_Nearside
+junction_location_Not at junction
+casualty_class_Passenger
+first_point_of_impact_Side
+skidding_and_overturning_Overturned
+sex_of_driver_Female
+pedestrian_movement_Crossing
+vehicle_leaving_carriageway_Offside
+road_type_Single carriageway
+light_conditions_Darkness - lights lit
+hit_object_off_carriageway_Tree
+vehicle_manoeuvre_Turning
+light_conditions_Darkness - no or unlit lighting
+road_class_name_Main road
+casualty_type_Van
+road_class_name_Local road
+time_period_afternoon
+junction_control_Give way or uncontrolled

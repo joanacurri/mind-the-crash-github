@@ -1,0 +1,12 @@
+# Python 3.12
+numpy
+pandas
+matplotlib
+seaborn
+plotly
+scikit-learn
+xgboost
+joblib
+holidays
+tqdm
+jupyter

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Where collisions turn serious – Mind the Crash</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script type="module" src="where-serious_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="where-serious_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="vendor/govuk/govuk-frontend.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<script>
+
+  document.documentElement.classList.add("govuk-template");
+
+  document.body.classList.add("govuk-template__body", "govuk-frontend-supported");
+
+</script>
+
+<a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+
+<header class="govuk-header">
+
+  <div class="govuk-header__container govuk-width-container">
+
+    <div class="govuk-header__logo">
+
+      <a href="#" class="govuk-header__link govuk-header__link--homepage">
+
+<span class="mtc-brand">Mind the Crash</span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+<section class="govuk-service-navigation" aria-label="Service information">
+
+  <div class="govuk-width-container">
+
+    <div class="govuk-service-navigation__container">
+
+      <span class="govuk-service-navigation__service-name">
+
+        <a href="take-a-call.html" class="govuk-service-navigation__link">Road collision triage</a>
+
+      </span>
+
+      <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+
+        <ul class="govuk-service-navigation__list">
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="take-a-call.html">Take a call</a></li>
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="how-it-works.html">How the estimate works</a></li>
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="what-matters.html">What the model listens to</a></li>
+
+          <li class="govuk-service-navigation__item">
+
+            <a class="govuk-service-navigation__link" href="where-serious.html">Where collisions turn serious</a></li>
+
+        </ul>
+
+      </nav>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+
+  for (const a of document.querySelectorAll(".govuk-service-navigation__item a")) {
+
+    if (location.pathname.endsWith(a.getAttribute("href"))) {
+
+      a.parentElement.classList.add("govuk-service-navigation__item--active");
+
+      a.setAttribute("aria-current", "page");
+
+    }
+
+  }
+
+</script>
+
+<div class="govuk-width-container">
+
+  <div class="govuk-phase-banner">
+
+    <p class="govuk-phase-banner__content">
+
+      <strong class="govuk-tag govuk-phase-banner__content__tag">Demo</strong>
+
+      <span class="govuk-phase-banner__text">University project demo built on open STATS19 data. Not an official GOV.UK or emergency service.</span>
+
+    </p>
+
+  </div>
+
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+
+
+
+
+
+<div class="cell hidden">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="8" data-source-offset="-0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 7;"><span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { radios } <span class="im">from</span> <span class="st">"./js/govuk-inputs.js"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>map <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/map.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>fmt <span class="op">=</span> (x) <span class="kw">=&gt;</span> x<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-GB"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>pct <span class="op">=</span> (x) <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(x <span class="op">*</span> <span class="dv">100</span>)<span class="sc">}</span><span class="vs">%`</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Below these counts a hexagon's share is too noisy to colour.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>MIN_SERIOUS <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>RAMP <span class="op">=</span> [<span class="st">"#fbe3e6"</span><span class="op">,</span> <span class="st">"#f2a7b2"</span><span class="op">,</span> <span class="st">"#e0607a"</span><span class="op">,</span> <span class="st">"#c8102e"</span><span class="op">,</span> <span class="st">"#7a0a1c"</span>]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>MEASURES <span class="op">=</span> ({</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">serious</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Share of collisions that turned serious"</span><span class="op">,</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            <span class="dt">value</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">serious</span> <span class="op">/</span> d<span class="op">.</span><span class="at">n</span><span class="op">,</span> <span class="dt">shown</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">n</span> <span class="op">&gt;=</span> map<span class="op">.</span><span class="at">min_hex</span>}<span class="op">,</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">missed</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Share of serious collisions the model missed"</span><span class="op">,</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>           <span class="dt">value</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">missed</span> <span class="op">/</span> d<span class="op">.</span><span class="at">serious</span><span class="op">,</span> <span class="dt">shown</span><span class="op">:</span> (d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">serious</span> <span class="op">&gt;=</span> MIN_SERIOUS}<span class="op">,</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>rural <span class="op">=</span> map<span class="op">.</span><span class="at">setting</span><span class="op">.</span><span class="fu">find</span>((d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">setting</span> <span class="op">===</span> <span class="st">"Rural"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>urban <span class="op">=</span> map<span class="op">.</span><span class="at">setting</span><span class="op">.</span><span class="fu">find</span>((d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">setting</span> <span class="op">===</span> <span class="st">"Urban"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="26" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 25;"><span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;span class="govuk-caption-m"&gt;Road collision triage&lt;/span&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;h1 class="govuk-heading-l"&gt;Where collisions turn serious&lt;/h1&gt;</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;p class="govuk-body-l"&gt;Collisions in rural areas turn serious more often:</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;strong&gt;</span><span class="sc">${</span><span class="fu">pct</span>(rural<span class="op">.</span><span class="at">serious</span> <span class="op">/</span> rural<span class="op">.</span><span class="at">n</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt; against </span><span class="sc">${</span><span class="fu">pct</span>(urban<span class="op">.</span><span class="at">serious</span> <span class="op">/</span> urban<span class="op">.</span><span class="at">n</span>)<span class="sc">}</span><span class="vs"> in towns.</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="vs">The model misses fewer of them: </span><span class="sc">${</span><span class="fu">pct</span>(rural<span class="op">.</span><span class="at">missed</span> <span class="op">/</span> rural<span class="op">.</span><span class="at">serious</span>)<span class="sc">}</span><span class="vs"> of serious rural collisions,</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="vs">against </span><span class="sc">${</span><span class="fu">pct</span>(urban<span class="op">.</span><span class="at">missed</span> <span class="op">/</span> urban<span class="op">.</span><span class="at">serious</span>)<span class="sc">}</span><span class="vs"> in towns.&lt;/p&gt;`</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="map-layout">
+<div class="map-side">
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="40" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 39;"><span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>viewof misura <span class="op">=</span> <span class="fu">radios</span>(<span class="st">"Show"</span><span class="op">,</span> [[MEASURES<span class="op">.</span><span class="at">serious</span><span class="op">.</span><span class="at">label</span><span class="op">,</span> <span class="st">"serious"</span>]<span class="op">,</span> [MEASURES<span class="op">.</span><span class="at">missed</span><span class="op">.</span><span class="at">label</span><span class="op">,</span> <span class="st">"missed"</span>]]<span class="op">,</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">value</span><span class="op">:</span> <span class="st">"serious"</span>})</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="47" data-source-offset="-0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 46;"><span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> MEASURES[misura <span class="op">??</span> <span class="st">"serious"</span>]</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>shown <span class="op">=</span> map<span class="op">.</span><span class="at">hexes</span><span class="op">.</span><span class="fu">filter</span>(m<span class="op">.</span><span class="at">shown</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co">// Five classes with equal numbers of coloured hexagons.</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>breaks <span class="op">=</span> {</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> v <span class="op">=</span> shown<span class="op">.</span><span class="fu">map</span>(m<span class="op">.</span><span class="at">value</span>)<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">-</span> b)<span class="op">;</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> [<span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span>]<span class="op">.</span><span class="fu">map</span>((k) <span class="kw">=&gt;</span> v[<span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(k <span class="op">*</span> v<span class="op">.</span><span class="at">length</span> <span class="op">/</span> <span class="dv">5</span>)])<span class="op">;</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>colour <span class="op">=</span> (d) <span class="kw">=&gt;</span> m<span class="op">.</span><span class="fu">shown</span>(d) <span class="op">?</span> RAMP[breaks<span class="op">.</span><span class="fu">filter</span>((b) <span class="kw">=&gt;</span> m<span class="op">.</span><span class="fu">value</span>(d) <span class="op">&gt;=</span> b)<span class="op">.</span><span class="at">length</span>] <span class="op">:</span> <span class="st">"#e5e8ef"</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div class="legend"&gt;</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;p class="govuk-body-s govuk-!-margin-bottom-2"&gt;&lt;strong&gt;</span><span class="sc">${</span>m<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">&lt;/strong&gt;&lt;/p&gt;</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="vs">  </span><span class="sc">${</span>RAMP<span class="op">.</span><span class="fu">map</span>((c<span class="op">,</span> i) <span class="kw">=&gt;</span> <span class="fu">html</span><span class="vs">`&lt;div class="legend__row"&gt;&lt;span class="legend__swatch" style="background:</span><span class="sc">${</span>c<span class="sc">}</span><span class="vs">"&gt;&lt;/span&gt;</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>i <span class="op">===</span> <span class="dv">0</span> <span class="op">?</span> <span class="vs">`under </span><span class="sc">${</span><span class="fu">pct</span>(breaks[<span class="dv">0</span>])<span class="sc">}</span><span class="vs">`</span> <span class="op">:</span> i <span class="op">===</span> <span class="dv">4</span> <span class="op">?</span> <span class="vs">`</span><span class="sc">${</span><span class="fu">pct</span>(breaks[<span class="dv">3</span>])<span class="sc">}</span><span class="vs"> or more`</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span> <span class="vs">`</span><span class="sc">${</span><span class="fu">pct</span>(breaks[i <span class="op">-</span> <span class="dv">1</span>])<span class="sc">}</span><span class="vs"> to </span><span class="sc">${</span><span class="fu">pct</span>(breaks[i])<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">&lt;/div&gt;`</span>)<span class="sc">}</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="legend__row"&gt;&lt;span class="legend__swatch" style="background:#e5e8ef"&gt;&lt;/span&gt;</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="vs">    Too few collisions to tell&lt;/div&gt;</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="map-main">
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="72" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 71;"><span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> R <span class="op">=</span> map<span class="op">.</span><span class="at">radius</span><span class="op">;</span></span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xs <span class="op">=</span> map<span class="op">.</span><span class="at">hexes</span><span class="op">.</span><span class="fu">map</span>((d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">cx</span>)<span class="op">,</span> ys <span class="op">=</span> map<span class="op">.</span><span class="at">hexes</span><span class="op">.</span><span class="fu">map</span>((d) <span class="kw">=&gt;</span> <span class="op">-</span>d<span class="op">.</span><span class="at">cy</span>)<span class="op">;</span></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> [x0<span class="op">,</span> x1] <span class="op">=</span> [<span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>xs) <span class="op">-</span> R<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>xs) <span class="op">+</span> R]<span class="op">;</span></span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> [y0<span class="op">,</span> y1] <span class="op">=</span> [<span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>ys) <span class="op">-</span> R<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>ys) <span class="op">+</span> R]<span class="op">;</span></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> corners <span class="op">=</span> [<span class="dv">30</span><span class="op">,</span> <span class="dv">90</span><span class="op">,</span> <span class="dv">150</span><span class="op">,</span> <span class="dv">210</span><span class="op">,</span> <span class="dv">270</span><span class="op">,</span> <span class="dv">330</span>]<span class="op">.</span><span class="fu">map</span>((a) <span class="kw">=&gt;</span> [<span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(a <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span> <span class="op">/</span> <span class="dv">180</span>)<span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(a <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span> <span class="op">/</span> <span class="dv">180</span>)])<span class="op">;</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> hex <span class="op">=</span> (d) <span class="kw">=&gt;</span> corners<span class="op">.</span><span class="fu">map</span>(([c<span class="op">,</span> s]) <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>(d<span class="op">.</span><span class="at">cx</span> <span class="op">+</span> R <span class="op">*</span> c)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>(<span class="op">-</span>d<span class="op">.</span><span class="at">cy</span> <span class="op">+</span> R <span class="op">*</span> s)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">" "</span>)<span class="op">;</span></span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> box <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"div"</span>)<span class="op">;</span></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>  box<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">"hexmap-box"</span><span class="op">;</span></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>  box<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="vs">`&lt;svg class="hexmap" viewBox="</span><span class="sc">${</span>x0<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>y0<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>x1 <span class="op">-</span> x0<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>y1 <span class="op">-</span> y0<span class="sc">}</span><span class="vs">" role="img"</span></span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="vs">    aria-label="Map of Great Britain: </span><span class="sc">${</span>m<span class="op">.</span><span class="at">label</span><span class="op">.</span><span class="fu">toLowerCase</span>()<span class="sc">}</span><span class="vs">, by area"&gt;</span></span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>map<span class="op">.</span><span class="at">hexes</span><span class="op">.</span><span class="fu">map</span>((d<span class="op">,</span> i) <span class="kw">=&gt;</span> <span class="vs">`&lt;polygon data-i="</span><span class="sc">${</span>i<span class="sc">}</span><span class="vs">" data-areas="</span><span class="sc">${</span>d<span class="op">.</span><span class="at">place</span><span class="op">.</span><span class="at">areas</span><span class="op">.</span><span class="fu">join</span>(<span class="st">"|"</span>)<span class="sc">}</span><span class="vs">" points="</span><span class="sc">${</span><span class="fu">hex</span>(d)<span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span><span class="fu">colour</span>(d)<span class="sc">}</span><span class="vs">"/&gt;`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">""</span>)<span class="sc">}</span></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/svg&gt;&lt;div class="hextip" hidden&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> tip <span class="op">=</span> box<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".hextip"</span>)<span class="op">;</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>  box<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"pointermove"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> d <span class="op">=</span> map<span class="op">.</span><span class="at">hexes</span>[e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="at">dataset</span><span class="op">?.</span><span class="at">i</span>]<span class="op">;</span></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>d) { tip<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> <span class="cf">return</span><span class="op">;</span> }</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> r <span class="op">=</span> box<span class="op">.</span><span class="fu">getBoundingClientRect</span>()<span class="op">;</span></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>    tip<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="vs">`&lt;strong&gt;</span><span class="sc">${</span>d<span class="op">.</span><span class="at">place</span><span class="op">.</span><span class="at">districts</span><span class="op">.</span><span class="fu">join</span>(<span class="st">", "</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt;</span></span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;span class="hextip__area"&gt;Police force: </span><span class="sc">${</span>d<span class="op">.</span><span class="at">place</span><span class="op">.</span><span class="at">area</span><span class="sc">}</span><span class="vs">&lt;/span&gt;</span></span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">n</span>)<span class="sc">}</span><span class="vs"> collisions of any severity&lt;br&gt;</span></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">serious</span>)<span class="sc">}</span><span class="vs"> serious (</span><span class="sc">${</span><span class="fu">pct</span>(d<span class="op">.</span><span class="at">serious</span> <span class="op">/</span> d<span class="op">.</span><span class="at">n</span>)<span class="sc">}</span><span class="vs">)&lt;br&gt;</span></span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">missed</span>)<span class="sc">}</span><span class="vs"> serious missed by the model</span><span class="sc">${</span>d<span class="op">.</span><span class="at">serious</span> <span class="op">?</span> <span class="vs">` (</span><span class="sc">${</span><span class="fu">pct</span>(d<span class="op">.</span><span class="at">missed</span> <span class="op">/</span> d<span class="op">.</span><span class="at">serious</span>)<span class="sc">}</span><span class="vs">)`</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}</span></span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>m<span class="op">.</span><span class="fu">shown</span>(d) <span class="op">?</span> <span class="st">""</span> <span class="op">:</span> <span class="vs">`&lt;span class="hextip__note"&gt;Too few collisions to colour&lt;/span&gt;`</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>    tip<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> e<span class="op">.</span><span class="at">clientX</span> <span class="op">-</span> r<span class="op">.</span><span class="at">left</span><span class="op">,</span> y <span class="op">=</span> e<span class="op">.</span><span class="at">clientY</span> <span class="op">-</span> r<span class="op">.</span><span class="at">top</span><span class="op">;</span></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>    tip<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">left</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>x <span class="op">&gt;</span> r<span class="op">.</span><span class="at">width</span> <span class="op">/</span> <span class="dv">2</span> <span class="op">?</span> x <span class="op">-</span> tip<span class="op">.</span><span class="at">offsetWidth</span> <span class="op">-</span> <span class="dv">16</span> <span class="op">:</span> x <span class="op">+</span> <span class="dv">16</span><span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>    tip<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">top</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">0</span><span class="op">,</span> y <span class="op">-</span> tip<span class="op">.</span><span class="at">offsetHeight</span> <span class="op">/</span> <span class="dv">2</span>)<span class="sc">}</span><span class="vs">px`</span><span class="op">;</span></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>  box<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"pointerleave"</span><span class="op">,</span> () <span class="kw">=&gt;</span> { tip<span class="op">.</span><span class="at">hidden</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> })<span class="op">;</span></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> box<span class="op">;</span></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="map-table">
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="112" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 111;"><span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Hovering an area lights up the hexagons where it recorded collisions.</span></span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> light <span class="op">=</span> (area) <span class="kw">=&gt;</span> {</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> svg <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".hexmap"</span>)<span class="op">;</span></span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>svg) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">toggle</span>(<span class="st">"hexmap--focus"</span><span class="op">,</span> <span class="bu">Boolean</span>(area))<span class="op">;</span></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">const</span> p <span class="kw">of</span> svg<span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">"polygon"</span>)) {</span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>      p<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">toggle</span>(<span class="st">"is-lit"</span><span class="op">,</span> <span class="bu">Boolean</span>(area) <span class="op">&amp;&amp;</span> p<span class="op">.</span><span class="at">dataset</span><span class="op">.</span><span class="at">areas</span><span class="op">.</span><span class="fu">split</span>(<span class="st">"|"</span>)<span class="op">.</span><span class="fu">includes</span>(area))<span class="op">;</span></span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> node <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;</span></span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;h2 class="govuk-heading-s"&gt;By police force area&lt;/h2&gt;</span></span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;table class="govuk-table counts"&gt;</span></span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;thead class="govuk-table__head"&gt;&lt;tr class="govuk-table__row"&gt;</span></span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;th class="govuk-table__header"&gt;Area&lt;/th&gt;</span></span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;th class="govuk-table__header govuk-table__header--numeric"&gt;Share&lt;/th&gt;</span></span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;th class="govuk-table__header govuk-table__header--numeric"&gt;All collisions&lt;/th&gt;</span></span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/tr&gt;&lt;/thead&gt;</span></span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;tbody class="govuk-table__body"&gt;</span></span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span><span class="sc">${</span>[<span class="op">...</span>map<span class="op">.</span><span class="at">areas</span>]<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> m<span class="op">.</span><span class="fu">value</span>(b) <span class="op">-</span> m<span class="op">.</span><span class="fu">value</span>(a))<span class="op">.</span><span class="fu">map</span>((a) <span class="kw">=&gt;</span> <span class="fu">html</span><span class="vs">`&lt;tr class="govuk-table__row" data-area="</span><span class="sc">${</span>a<span class="op">.</span><span class="at">area</span><span class="sc">}</span><span class="vs">"&gt;</span></span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;td class="govuk-table__cell"&gt;</span><span class="sc">${</span>a<span class="op">.</span><span class="at">area</span><span class="sc">}</span><span class="vs">&lt;/td&gt;</span></span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;td class="govuk-table__cell govuk-table__cell--numeric"&gt;</span><span class="sc">${</span><span class="fu">pct</span>(m<span class="op">.</span><span class="fu">value</span>(a))<span class="sc">}</span><span class="vs">&lt;/td&gt;</span></span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a><span class="vs">          &lt;td class="govuk-table__cell govuk-table__cell--numeric"&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(a<span class="op">.</span><span class="at">n</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;/tr&gt;`</span>)<span class="sc">}</span></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/tbody&gt;</span></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/table&gt;</span></span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a>  node<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"pointerover"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> <span class="fu">light</span>(e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="fu">closest</span>(<span class="st">"tr[data-area]"</span>)<span class="op">?.</span><span class="at">dataset</span><span class="op">.</span><span class="at">area</span>))<span class="op">;</span></span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>  node<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"pointerleave"</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="fu">light</span>(<span class="kw">null</span>))<span class="op">;</span></span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> node<span class="op">;</span></span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="150" data-source-offset="0"><pre class="sourceCode js"><code class="sourceCode javascript" style="counter-reset: source-line 149;"><span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;h2 class="govuk-heading-m govuk-!-margin-top-6"&gt;How this map was made&lt;/h2&gt;</span></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;p class="govuk-body"&gt;The </span><span class="sc">${</span><span class="fu">fmt</span>(map<span class="op">.</span><span class="at">n</span>)<span class="sc">}</span><span class="vs"> collisions held out from training, grouped into hexagons</span></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a><span class="vs">by where they happened. A collision counts as missed when it was serious and the model scored it</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a><span class="vs">below the threshold. Hexagons with fewer than </span><span class="sc">${</span>map<span class="op">.</span><span class="at">min_hex</span><span class="sc">}</span><span class="vs"> collisions, or fewer than</span></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span>MIN_SERIOUS<span class="sc">}</span><span class="vs"> serious ones on the second view, stay grey.&lt;/p&gt;`</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+
+  </main>
+  <div class="feedback" id="feedback">
+    <p class="govuk-body govuk-!-margin-bottom-0">
+      <strong>Is this page useful?</strong>
+      <button type="button" class="govuk-button govuk-button--secondary feedback__btn">Yes</button>
+      <button type="button" class="govuk-button govuk-button--secondary feedback__btn">No</button>
+    </p>
+  </div>
+</div>
+<footer class="govuk-footer">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-body-s govuk-!-margin-bottom-0">
+          Model: XGBoost trained on STATS19 road safety data, Department for Transport, 2021–2025.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+  document.getElementById("feedback").addEventListener("click", (e) => {
+    if (!e.target.closest(".feedback__btn")) return;
+    e.currentTarget.innerHTML =
+      '<p class="govuk-body govuk-!-margin-bottom-0">Thank you for your feedback. It has been carefully filed.</p>';
+  });
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7IHJhZGlvcyB9IGZyb20gXCIuL2pzL2dvdnVrLWlucHV0cy5qc1wiXHJcbm1hcCA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9tYXAuanNvblwiKS5qc29uKClcclxuZm10ID0gKHgpID0+IHgudG9Mb2NhbGVTdHJpbmcoXCJlbi1HQlwiKVxyXG5wY3QgPSAoeCkgPT4gYCR7TWF0aC5yb3VuZCh4ICogMTAwKX0lYFxyXG4vLyBCZWxvdyB0aGVzZSBjb3VudHMgYSBoZXhhZ29uJ3Mgc2hhcmUgaXMgdG9vIG5vaXN5IHRvIGNvbG91ci5cclxuTUlOX1NFUklPVVMgPSAxNVxyXG5SQU1QID0gW1wiI2ZiZTNlNlwiLCBcIiNmMmE3YjJcIiwgXCIjZTA2MDdhXCIsIFwiI2M4MTAyZVwiLCBcIiM3YTBhMWNcIl1cclxuTUVBU1VSRVMgPSAoe1xyXG4gIHNlcmlvdXM6IHtsYWJlbDogXCJTaGFyZSBvZiBjb2xsaXNpb25zIHRoYXQgdHVybmVkIHNlcmlvdXNcIixcclxuICAgICAgICAgICAgdmFsdWU6IChkKSA9PiBkLnNlcmlvdXMgLyBkLm4sIHNob3duOiAoZCkgPT4gZC5uID49IG1hcC5taW5faGV4fSxcclxuICBtaXNzZWQ6IHtsYWJlbDogXCJTaGFyZSBvZiBzZXJpb3VzIGNvbGxpc2lvbnMgdGhlIG1vZGVsIG1pc3NlZFwiLFxyXG4gICAgICAgICAgIHZhbHVlOiAoZCkgPT4gZC5taXNzZWQgLyBkLnNlcmlvdXMsIHNob3duOiAoZCkgPT4gZC5zZXJpb3VzID49IE1JTl9TRVJJT1VTfSxcclxufSlcclxucnVyYWwgPSBtYXAuc2V0dGluZy5maW5kKChkKSA9PiBkLnNldHRpbmcgPT09IFwiUnVyYWxcIilcclxudXJiYW4gPSBtYXAuc2V0dGluZy5maW5kKChkKSA9PiBkLnNldHRpbmcgPT09IFwiVXJiYW5cIilcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiaHRtbGA8c3BhbiBjbGFzcz1cImdvdnVrLWNhcHRpb24tbVwiPlJvYWQgY29sbGlzaW9uIHRyaWFnZTwvc3Bhbj5cclxuPGgxIGNsYXNzPVwiZ292dWstaGVhZGluZy1sXCI+V2hlcmUgY29sbGlzaW9ucyB0dXJuIHNlcmlvdXM8L2gxPlxyXG48cCBjbGFzcz1cImdvdnVrLWJvZHktbFwiPkNvbGxpc2lvbnMgaW4gcnVyYWwgYXJlYXMgdHVybiBzZXJpb3VzIG1vcmUgb2Z0ZW46XHJcbjxzdHJvbmc+JHtwY3QocnVyYWwuc2VyaW91cyAvIHJ1cmFsLm4pfTwvc3Ryb25nPiBhZ2FpbnN0ICR7cGN0KHVyYmFuLnNlcmlvdXMgLyB1cmJhbi5uKX0gaW4gdG93bnMuXHJcblRoZSBtb2RlbCBtaXNzZXMgZmV3ZXIgb2YgdGhlbTogJHtwY3QocnVyYWwubWlzc2VkIC8gcnVyYWwuc2VyaW91cyl9IG9mIHNlcmlvdXMgcnVyYWwgY29sbGlzaW9ucyxcclxuYWdhaW5zdCAke3BjdCh1cmJhbi5taXNzZWQgLyB1cmJhbi5zZXJpb3VzKX0gaW4gdG93bnMuPC9wPmBcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIG1pc3VyYSA9IHJhZGlvcyhcIlNob3dcIiwgW1tNRUFTVVJFUy5zZXJpb3VzLmxhYmVsLCBcInNlcmlvdXNcIl0sIFtNRUFTVVJFUy5taXNzZWQubGFiZWwsIFwibWlzc2VkXCJdXSxcclxuICB7dmFsdWU6IFwic2VyaW91c1wifSlcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoibSA9IE1FQVNVUkVTW21pc3VyYSA/PyBcInNlcmlvdXNcIl1cclxuc2hvd24gPSBtYXAuaGV4ZXMuZmlsdGVyKG0uc2hvd24pXHJcbi8vIEZpdmUgY2xhc3NlcyB3aXRoIGVxdWFsIG51bWJlcnMgb2YgY29sb3VyZWQgaGV4YWdvbnMuXHJcbmJyZWFrcyA9IHtcclxuICBjb25zdCB2ID0gc2hvd24ubWFwKG0udmFsdWUpLnNvcnQoKGEsIGIpID0+IGEgLSBiKTtcclxuICByZXR1cm4gWzEsIDIsIDMsIDRdLm1hcCgoaykgPT4gdltNYXRoLmZsb29yKGsgKiB2Lmxlbmd0aCAvIDUpXSk7XHJcbn1cclxuY29sb3VyID0gKGQpID0+IG0uc2hvd24oZCkgPyBSQU1QW2JyZWFrcy5maWx0ZXIoKGIpID0+IG0udmFsdWUoZCkgPj0gYikubGVuZ3RoXSA6IFwiI2U1ZThlZlwiXHJcbmh0bWxgPGRpdiBjbGFzcz1cImxlZ2VuZFwiPlxyXG4gIDxwIGNsYXNzPVwiZ292dWstYm9keS1zIGdvdnVrLSEtbWFyZ2luLWJvdHRvbS0yXCI+PHN0cm9uZz4ke20ubGFiZWx9PC9zdHJvbmc+PC9wPlxyXG4gICR7UkFNUC5tYXAoKGMsIGkpID0+IGh0bWxgPGRpdiBjbGFzcz1cImxlZ2VuZF9fcm93XCI+PHNwYW4gY2xhc3M9XCJsZWdlbmRfX3N3YXRjaFwiIHN0eWxlPVwiYmFja2dyb3VuZDoke2N9XCI+PC9zcGFuPlxyXG4gICAgJHtpID09PSAwID8gYHVuZGVyICR7cGN0KGJyZWFrc1swXSl9YCA6IGkgPT09IDQgPyBgJHtwY3QoYnJlYWtzWzNdKX0gb3IgbW9yZWBcclxuICAgICAgOiBgJHtwY3QoYnJlYWtzW2kgLSAxXSl9IHRvICR7cGN0KGJyZWFrc1tpXSl9YH08L2Rpdj5gKX1cclxuICA8ZGl2IGNsYXNzPVwibGVnZW5kX19yb3dcIj48c3BhbiBjbGFzcz1cImxlZ2VuZF9fc3dhdGNoXCIgc3R5bGU9XCJiYWNrZ3JvdW5kOiNlNWU4ZWZcIj48L3NwYW4+XHJcbiAgICBUb28gZmV3IGNvbGxpc2lvbnMgdG8gdGVsbDwvZGl2PlxyXG48L2Rpdj5gXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcclxuICBjb25zdCBSID0gbWFwLnJhZGl1cztcclxuICBjb25zdCB4cyA9IG1hcC5oZXhlcy5tYXAoKGQpID0+IGQuY3gpLCB5cyA9IG1hcC5oZXhlcy5tYXAoKGQpID0+IC1kLmN5KTtcclxuICBjb25zdCBbeDAsIHgxXSA9IFtNYXRoLm1pbiguLi54cykgLSBSLCBNYXRoLm1heCguLi54cykgKyBSXTtcclxuICBjb25zdCBbeTAsIHkxXSA9IFtNYXRoLm1pbiguLi55cykgLSBSLCBNYXRoLm1heCguLi55cykgKyBSXTtcclxuICBjb25zdCBjb3JuZXJzID0gWzMwLCA5MCwgMTUwLCAyMTAsIDI3MCwgMzMwXS5tYXAoKGEpID0+IFtNYXRoLmNvcyhhICogTWF0aC5QSSAvIDE4MCksIE1hdGguc2luKGEgKiBNYXRoLlBJIC8gMTgwKV0pO1xyXG4gIGNvbnN0IGhleCA9IChkKSA9PiBjb3JuZXJzLm1hcCgoW2MsIHNdKSA9PiBgJHsoZC5jeCArIFIgKiBjKS50b0ZpeGVkKDQpfSwkeygtZC5jeSArIFIgKiBzKS50b0ZpeGVkKDQpfWApLmpvaW4oXCIgXCIpO1xyXG4gIGNvbnN0IGJveCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XHJcbiAgYm94LmNsYXNzTmFtZSA9IFwiaGV4bWFwLWJveFwiO1xyXG4gIGJveC5pbm5lckhUTUwgPSBgPHN2ZyBjbGFzcz1cImhleG1hcFwiIHZpZXdCb3g9XCIke3gwfSAke3kwfSAke3gxIC0geDB9ICR7eTEgLSB5MH1cIiByb2xlPVwiaW1nXCJcclxuICAgIGFyaWEtbGFiZWw9XCJNYXAgb2YgR3JlYXQgQnJpdGFpbjogJHttLmxhYmVsLnRvTG93ZXJDYXNlKCl9LCBieSBhcmVhXCI+XHJcbiAgICAke21hcC5oZXhlcy5tYXAoKGQsIGkpID0+IGA8cG9seWdvbiBkYXRhLWk9XCIke2l9XCIgZGF0YS1hcmVhcz1cIiR7ZC5wbGFjZS5hcmVhcy5qb2luKFwifFwiKX1cIiBwb2ludHM9XCIke2hleChkKX1cIiBmaWxsPVwiJHtjb2xvdXIoZCl9XCIvPmApLmpvaW4oXCJcIil9XHJcbiAgPC9zdmc+PGRpdiBjbGFzcz1cImhleHRpcFwiIGhpZGRlbj48L2Rpdj5gO1xyXG4gIGNvbnN0IHRpcCA9IGJveC5xdWVyeVNlbGVjdG9yKFwiLmhleHRpcFwiKTtcclxuICBib3guYWRkRXZlbnRMaXN0ZW5lcihcInBvaW50ZXJtb3ZlXCIsIChlKSA9PiB7XHJcbiAgICBjb25zdCBkID0gbWFwLmhleGVzW2UudGFyZ2V0LmRhdGFzZXQ/LmldO1xyXG4gICAgaWYgKCFkKSB7IHRpcC5oaWRkZW4gPSB0cnVlOyByZXR1cm47IH1cclxuICAgIGNvbnN0IHIgPSBib3guZ2V0Qm91bmRpbmdDbGllbnRSZWN0KCk7XHJcbiAgICB0aXAuaW5uZXJIVE1MID0gYDxzdHJvbmc+JHtkLnBsYWNlLmRpc3RyaWN0cy5qb2luKFwiLCBcIil9PC9zdHJvbmc+XHJcbiAgICAgIDxzcGFuIGNsYXNzPVwiaGV4dGlwX19hcmVhXCI+UG9saWNlIGZvcmNlOiAke2QucGxhY2UuYXJlYX08L3NwYW4+XHJcbiAgICAgICR7Zm10KGQubil9IGNvbGxpc2lvbnMgb2YgYW55IHNldmVyaXR5PGJyPlxyXG4gICAgICAke2ZtdChkLnNlcmlvdXMpfSBzZXJpb3VzICgke3BjdChkLnNlcmlvdXMgLyBkLm4pfSk8YnI+XHJcbiAgICAgICR7Zm10KGQubWlzc2VkKX0gc2VyaW91cyBtaXNzZWQgYnkgdGhlIG1vZGVsJHtkLnNlcmlvdXMgPyBgICgke3BjdChkLm1pc3NlZCAvIGQuc2VyaW91cyl9KWAgOiBcIlwifVxyXG4gICAgICAke20uc2hvd24oZCkgPyBcIlwiIDogYDxzcGFuIGNsYXNzPVwiaGV4dGlwX19ub3RlXCI+VG9vIGZldyBjb2xsaXNpb25zIHRvIGNvbG91cjwvc3Bhbj5gfWA7XHJcbiAgICB0aXAuaGlkZGVuID0gZmFsc2U7XHJcbiAgICBjb25zdCB4ID0gZS5jbGllbnRYIC0gci5sZWZ0LCB5ID0gZS5jbGllbnRZIC0gci50b3A7XHJcbiAgICB0aXAuc3R5bGUubGVmdCA9IGAke3ggPiByLndpZHRoIC8gMiA/IHggLSB0aXAub2Zmc2V0V2lkdGggLSAxNiA6IHggKyAxNn1weGA7XHJcbiAgICB0aXAuc3R5bGUudG9wID0gYCR7TWF0aC5tYXgoMCwgeSAtIHRpcC5vZmZzZXRIZWlnaHQgLyAyKX1weGA7XHJcbiAgfSk7XHJcbiAgYm94LmFkZEV2ZW50TGlzdGVuZXIoXCJwb2ludGVybGVhdmVcIiwgKCkgPT4geyB0aXAuaGlkZGVuID0gdHJ1ZTsgfSk7XHJcbiAgcmV0dXJuIGJveDtcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XHJcbiAgLy8gSG92ZXJpbmcgYW4gYXJlYSBsaWdodHMgdXAgdGhlIGhleGFnb25zIHdoZXJlIGl0IHJlY29yZGVkIGNvbGxpc2lvbnMuXHJcbiAgY29uc3QgbGlnaHQgPSAoYXJlYSkgPT4ge1xyXG4gICAgY29uc3Qgc3ZnID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5oZXhtYXBcIik7XHJcbiAgICBpZiAoIXN2ZykgcmV0dXJuO1xyXG4gICAgc3ZnLmNsYXNzTGlzdC50b2dnbGUoXCJoZXhtYXAtLWZvY3VzXCIsIEJvb2xlYW4oYXJlYSkpO1xyXG4gICAgZm9yIChjb25zdCBwIG9mIHN2Zy5xdWVyeVNlbGVjdG9yQWxsKFwicG9seWdvblwiKSkge1xyXG4gICAgICBwLmNsYXNzTGlzdC50b2dnbGUoXCJpcy1saXRcIiwgQm9vbGVhbihhcmVhKSAmJiBwLmRhdGFzZXQuYXJlYXMuc3BsaXQoXCJ8XCIpLmluY2x1ZGVzKGFyZWEpKTtcclxuICAgIH1cclxuICB9O1xyXG4gIGNvbnN0IG5vZGUgPSBodG1sYDxkaXY+XHJcbiAgPGgyIGNsYXNzPVwiZ292dWstaGVhZGluZy1zXCI+QnkgcG9saWNlIGZvcmNlIGFyZWE8L2gyPlxyXG4gICAgPHRhYmxlIGNsYXNzPVwiZ292dWstdGFibGUgY291bnRzXCI+XHJcbiAgICAgIDx0aGVhZCBjbGFzcz1cImdvdnVrLXRhYmxlX19oZWFkXCI+PHRyIGNsYXNzPVwiZ292dWstdGFibGVfX3Jvd1wiPlxyXG4gICAgICAgIDx0aCBjbGFzcz1cImdvdnVrLXRhYmxlX19oZWFkZXJcIj5BcmVhPC90aD5cclxuICAgICAgICA8dGggY2xhc3M9XCJnb3Z1ay10YWJsZV9faGVhZGVyIGdvdnVrLXRhYmxlX19oZWFkZXItLW51bWVyaWNcIj5TaGFyZTwvdGg+XHJcbiAgICAgICAgPHRoIGNsYXNzPVwiZ292dWstdGFibGVfX2hlYWRlciBnb3Z1ay10YWJsZV9faGVhZGVyLS1udW1lcmljXCI+QWxsIGNvbGxpc2lvbnM8L3RoPlxyXG4gICAgICA8L3RyPjwvdGhlYWQ+XHJcbiAgICAgIDx0Ym9keSBjbGFzcz1cImdvdnVrLXRhYmxlX19ib2R5XCI+XHJcbiAgICAgICAgJHtbLi4ubWFwLmFyZWFzXS5zb3J0KChhLCBiKSA9PiBtLnZhbHVlKGIpIC0gbS52YWx1ZShhKSkubWFwKChhKSA9PiBodG1sYDx0ciBjbGFzcz1cImdvdnVrLXRhYmxlX19yb3dcIiBkYXRhLWFyZWE9XCIke2EuYXJlYX1cIj5cclxuICAgICAgICAgIDx0ZCBjbGFzcz1cImdvdnVrLXRhYmxlX19jZWxsXCI+JHthLmFyZWF9PC90ZD5cclxuICAgICAgICAgIDx0ZCBjbGFzcz1cImdvdnVrLXRhYmxlX19jZWxsIGdvdnVrLXRhYmxlX19jZWxsLS1udW1lcmljXCI+JHtwY3QobS52YWx1ZShhKSl9PC90ZD5cclxuICAgICAgICAgIDx0ZCBjbGFzcz1cImdvdnVrLXRhYmxlX19jZWxsIGdvdnVrLXRhYmxlX19jZWxsLS1udW1lcmljXCI+JHtmbXQoYS5uKX08L3RkPjwvdHI+YCl9XHJcbiAgICAgIDwvdGJvZHk+XHJcbiAgICA8L3RhYmxlPlxyXG48L2Rpdj5gO1xyXG4gIG5vZGUuYWRkRXZlbnRMaXN0ZW5lcihcInBvaW50ZXJvdmVyXCIsIChlKSA9PiBsaWdodChlLnRhcmdldC5jbG9zZXN0KFwidHJbZGF0YS1hcmVhXVwiKT8uZGF0YXNldC5hcmVhKSk7XHJcbiAgbm9kZS5hZGRFdmVudExpc3RlbmVyKFwicG9pbnRlcmxlYXZlXCIsICgpID0+IGxpZ2h0KG51bGwpKTtcclxuICByZXR1cm4gbm9kZTtcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTciLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJodG1sYDxoMiBjbGFzcz1cImdvdnVrLWhlYWRpbmctbSBnb3Z1ay0hLW1hcmdpbi10b3AtNlwiPkhvdyB0aGlzIG1hcCB3YXMgbWFkZTwvaDI+XHJcbjxwIGNsYXNzPVwiZ292dWstYm9keVwiPlRoZSAke2ZtdChtYXAubil9IGNvbGxpc2lvbnMgaGVsZCBvdXQgZnJvbSB0cmFpbmluZywgZ3JvdXBlZCBpbnRvIGhleGFnb25zXHJcbmJ5IHdoZXJlIHRoZXkgaGFwcGVuZWQuIEEgY29sbGlzaW9uIGNvdW50cyBhcyBtaXNzZWQgd2hlbiBpdCB3YXMgc2VyaW91cyBhbmQgdGhlIG1vZGVsIHNjb3JlZCBpdFxyXG5iZWxvdyB0aGUgdGhyZXNob2xkLiBIZXhhZ29ucyB3aXRoIGZld2VyIHRoYW4gJHttYXAubWluX2hleH0gY29sbGlzaW9ucywgb3IgZmV3ZXIgdGhhblxyXG4ke01JTl9TRVJJT1VTfSBzZXJpb3VzIG9uZXMgb24gdGhlIHNlY29uZCB2aWV3LCBzdGF5IGdyZXkuPC9wPmBcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdtaXN1cmEnKSJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../..";
+window._ojs.paths.runtimeToRoot = "../../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+
+
+
+
+</body></html>

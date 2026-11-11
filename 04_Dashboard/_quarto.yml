@@ -1,0 +1,20 @@
+project:
+  type: default
+  render:
+    - take-a-call.qmd
+    - how-it-works.qmd
+    - what-matters.qmd
+    - where-serious.qmd
+  resources:
+    - data/
+    - js/
+
+lang: en-GB
+format:
+  html:
+    minimal: true
+    css:
+      - vendor/govuk/govuk-frontend.min.css
+      - styles.css
+    include-before-body: partials/before-body.html
+    include-after-body: partials/after-body.html

@@ -1,0 +1,27 @@
+  </main>
+  <div class="feedback" id="feedback">
+    <p class="govuk-body govuk-!-margin-bottom-0">
+      <strong>Is this page useful?</strong>
+      <button type="button" class="govuk-button govuk-button--secondary feedback__btn">Yes</button>
+      <button type="button" class="govuk-button govuk-button--secondary feedback__btn">No</button>
+    </p>
+  </div>
+</div>
+<footer class="govuk-footer">
+  <div class="govuk-width-container">
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <p class="govuk-body-s govuk-!-margin-bottom-0">
+          Model: XGBoost trained on STATS19 road safety data, Department for Transport, 2021–2025.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+  document.getElementById("feedback").addEventListener("click", (e) => {
+    if (!e.target.closest(".feedback__btn")) return;
+    e.currentTarget.innerHTML =
+      '<p class="govuk-body govuk-!-margin-bottom-0">Thank you for your feedback. It has been carefully filed.</p>';
+  });
+</script>

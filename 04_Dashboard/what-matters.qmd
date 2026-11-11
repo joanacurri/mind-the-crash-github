@@ -1,0 +1,91 @@
+---
+pagetitle: "What the model listens to – Mind the Crash"
+---
+
+```{ojs}
+//| echo: false
+//| output: false
+imp = FileAttachment("data/importance.json").json()
+fmt = (x) => x.toLocaleString("en-GB")
+pct = (x) => `${Math.round(x * 100)}%`
+pts = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(1)} points`
+// Questions the operator does not ask: filled from the phone, the clock or the training median.
+automatic = (q) => /\((from|not asked)/.test(q)
+top = imp.weights[0]
+up = imp.answers[0]
+down = imp.answers[imp.answers.length - 1]
+maxShare = Math.max(...imp.weights.map((w) => w.share))
+maxPts = Math.max(...imp.answers.map((a) => Math.abs(a.points)))
+```
+
+```{ojs}
+//| echo: false
+html`<span class="govuk-caption-m">Road collision triage</span>
+<h1 class="govuk-heading-l">What the model listens to</h1>
+<p class="govuk-body-l">${top.question} weigh most: ${pct(top.share)} of what moves the
+estimate. The answer “${up.answer}” raises it the most, by ${pts(up.points).slice(1)};
+“${down.answer}” lowers it the most, by ${pts(down.points).slice(1)}.</p>`
+```
+
+```{ojs}
+//| echo: false
+html`<h2 class="govuk-heading-m govuk-!-margin-top-6">Which questions weigh most</h2>
+<p class="govuk-body">Share of what moves the estimate, by question. In grey, what the operator
+does not ask: the phone and the clock fill it in, or the model makes do with the most common
+value and hopes for the best.</p>
+<div class="box">
+  ${imp.weights.map((w) => html`<div class="hbar" title="${w.question}: ${pct(w.share)}">
+    <span class="hbar__label">${w.question}</span>
+    <span class="hbar__track"><span class="hbar__bar ${automatic(w.question) ? "hbar__bar--auto" : ""}"
+      style="width: ${w.share / maxShare * 100}%"></span></span>
+    <span class="hbar__value">${pct(w.share)}</span>
+  </div>`)}
+</div>`
+```
+
+```{ojs}
+//| echo: false
+html`<h2 class="govuk-heading-m govuk-!-margin-top-6">Which way each answer pushes</h2>
+<p class="govuk-body">For the collisions with that answer, how much the answer moves the
+probability of a serious collision, on average. Red pushes towards serious, blue towards slight.</p>
+<div class="box">
+  ${imp.answers.map((a) => html`<div class="dbar"
+      title="${a.answer}: ${pts(a.points)}, over ${fmt(a.n)} collisions">
+    <span class="hbar__label">${a.answer}</span>
+    <span class="dbar__track">
+      <span class="dbar__bar ${a.points >= 0 ? "dbar__bar--up" : "dbar__bar--down"}"
+        style="width: ${Math.abs(a.points) / maxPts * 50}%"></span></span>
+    <span class="hbar__value">${pts(a.points)}</span>
+  </div>`)}
+</div>
+<details class="govuk-details govuk-!-margin-top-4">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">Show the numbers</span>
+  </summary>
+  <div class="govuk-details__text">
+    <table class="govuk-table counts">
+      <thead class="govuk-table__head"><tr class="govuk-table__row">
+        <th class="govuk-table__header">Answer</th>
+        <th class="govuk-table__header">Question</th>
+        <th class="govuk-table__header govuk-table__header--numeric">Change in probability</th>
+        <th class="govuk-table__header govuk-table__header--numeric">Collisions</th>
+      </tr></thead>
+      <tbody class="govuk-table__body">
+        ${imp.answers.map((a) => html`<tr class="govuk-table__row">
+          <td class="govuk-table__cell">${a.answer}</td>
+          <td class="govuk-table__cell">${a.question}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${pts(a.points)}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${fmt(a.n)}</td></tr>`)}
+      </tbody>
+    </table>
+  </div>
+</details>`
+```
+
+```{ojs}
+//| echo: false
+html`<h2 class="govuk-heading-m govuk-!-margin-top-6">How these figures were measured</h2>
+<p class="govuk-body">On ${fmt(imp.n)} collisions held out from training. For each collision the
+model's estimate is split into the part each question contributes (SHAP values), and the parts
+are added up over the details each question fills in.</p>`
+```

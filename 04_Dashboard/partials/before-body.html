@@ -1,0 +1,51 @@
+<script>
+  document.documentElement.classList.add("govuk-template");
+  document.body.classList.add("govuk-template__body", "govuk-frontend-supported");
+</script>
+<a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+<header class="govuk-header">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="govuk-header__logo">
+      <a href="#" class="govuk-header__link govuk-header__link--homepage">
+<span class="mtc-brand">Mind the Crash</span>
+      </a>
+    </div>
+  </div>
+</header>
+<section class="govuk-service-navigation" aria-label="Service information">
+  <div class="govuk-width-container">
+    <div class="govuk-service-navigation__container">
+      <span class="govuk-service-navigation__service-name">
+        <a href="take-a-call.html" class="govuk-service-navigation__link">Road collision triage</a>
+      </span>
+      <nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+        <ul class="govuk-service-navigation__list">
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="take-a-call.html">Take a call</a></li>
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="how-it-works.html">How the estimate works</a></li>
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="what-matters.html">What the model listens to</a></li>
+          <li class="govuk-service-navigation__item">
+            <a class="govuk-service-navigation__link" href="where-serious.html">Where collisions turn serious</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+<script>
+  for (const a of document.querySelectorAll(".govuk-service-navigation__item a")) {
+    if (location.pathname.endsWith(a.getAttribute("href"))) {
+      a.parentElement.classList.add("govuk-service-navigation__item--active");
+      a.setAttribute("aria-current", "page");
+    }
+  }
+</script>
+<div class="govuk-width-container">
+  <div class="govuk-phase-banner">
+    <p class="govuk-phase-banner__content">
+      <strong class="govuk-tag govuk-phase-banner__content__tag">Demo</strong>
+      <span class="govuk-phase-banner__text">University project demo built on open STATS19 data. Not an official GOV.UK or emergency service.</span>
+    </p>
+  </div>
+  <main class="govuk-main-wrapper" id="main-content" role="main">

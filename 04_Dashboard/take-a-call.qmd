@@ -1,0 +1,186 @@
+---
+pagetitle: "Estimate collision severity – Mind the Crash"
+---
+
+```{ojs}
+//| echo: false
+//| output: false
+import { assess, emptyAnswers } from "./js/call.js"
+import { radios, counters, button } from "./js/govuk-inputs.js"
+model = FileAttachment("data/trees.json").json()
+meta = FileAttachment("data/meta.json").json()
+ages = FileAttachment("data/ages.json").json()
+locations = FileAttachment("data/locations.json").json()
+DONT_KNOW = ["Don't know", null]
+```
+
+```{=html}
+<span class="govuk-caption-m">Emergency call handling – internal tool</span>
+<h1 class="govuk-heading-l">Estimate collision severity</h1>
+```
+
+::: {.call-layout}
+
+::: {.call-form}
+
+::: {.call-head}
+
+```{ojs}
+//| echo: false
+html`<div class="call-bar">
+  <div><span class="call-bar__key">Caller location</span>
+    <strong>${loc.area}</strong>, ${loc.urban ? "urban area" : "rural area"}
+    <span class="call-bar__note">from the caller's phone</span></div>
+  <div><span class="call-bar__key">Time of call</span>
+    <strong>${now.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"})}</strong></div>
+</div>`
+```
+
+```{ojs}
+//| echo: false
+viewof nuova = button("Start a new call", "btn-newcall")
+```
+
+:::
+
+```{ojs}
+//| echo: false
+//| output: false
+// A new call: a real incident location stands in for the phone ping, the clock for the time.
+loc = (nuova, locations[Math.floor(Math.random() * locations.length)])
+now = (nuova, new Date())
+```
+
+::: {.box}
+
+```{ojs}
+//| echo: false
+viewof v = (nuova, counters("Vehicles involved", [
+  ["auto", "Cars"], ["moto_big", "Motorcycles over 125cc"], ["moto_small", "Motorcycles up to 125cc"],
+  ["bici", "Pedal cycles"], ["altri", "Vans, lorries or buses"]]))
+viewof c = (nuova, counters("Casualties", [
+  ["auto", "In a car"], ["due_ruote", "On a motorcycle or bicycle"], ["pedoni", "Pedestrians"],
+  ["furgone", "In a van"]]))
+```
+
+:::
+
+::: {.box}
+
+```{ojs}
+//| echo: false
+viewof f_attraversa = (nuova, radios("If a pedestrian was hurt, were they crossing the road?",
+  [["Yes", true], ["No", false], DONT_KNOW]))
+viewof eta = (nuova, radios("Age of the casualties",
+  [["Child", "bambino"], ["Adult", "adulto"], ["Older person", "anziano"], DONT_KNOW]))
+viewof urto = (nuova, radios("Type of impact",
+  [["Head-on", "frontale"], ["Rear-end", "tamponamento"], ["Side", "laterale"], DONT_KNOW]))
+viewof limite = (nuova, radios("Speed limit",
+  [20, 30, 40, 50, 60, 70].map((s) => [`${s} mph`, s]),
+  {value: loc.speed_limit, hint: "Taken from the caller's location. Change it if the caller says otherwise."}))
+```
+
+```{=html}
+<details class="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">More about the collision</span>
+  </summary>
+  <div class="govuk-details__text">
+```
+
+```{ojs}
+//| echo: false
+viewof manovra = (nuova, radios("What were the vehicles doing?",
+  [["All going ahead", "dritto"], ["One was turning", "svolta"], ["One was stopped or slowing", "fermo"], DONT_KNOW]))
+viewof uscita = (nuova, radios("Did a vehicle leave the road?",
+  [["No", "no"], ["Yes", "si"], ["Yes, and hit a tree", "albero"], DONT_KNOW]))
+viewof ribaltato = (nuova, radios("Did a vehicle overturn?", [["No", "no"], ["Yes", "si"], DONT_KNOW]))
+viewof luce = (nuova, radios("Light",
+  [["Daylight", "giorno"], ["Dark, street lights on", "buio_illuminato"], ["Dark, no street lights", "buio_non"], DONT_KNOW]))
+viewof strada = (nuova, radios("Type of road",
+  [["Motorway or dual carriageway", "superstrada"], ["Main road", "principale"], ["Local road", "locale"], DONT_KNOW]))
+viewof incrocio = (nuova, radios("Was it at a junction?",
+  [["No", "no"], ["Yes, traffic lights", "semaforo"], ["Yes, give way or uncontrolled", "precedenza"], DONT_KNOW]))
+```
+
+```{=html}
+  </div>
+</details>
+```
+
+:::
+
+:::
+
+::: {.call-result}
+
+```{ojs}
+//| echo: false
+//| output: false
+veicoli = Object.values(v).some((n) => n > 0) ? v : null
+feriti = Object.values(c).some((n) => n > 0) ? {...c, pedone_attraversa: f_attraversa === true} : null
+answers = ({...emptyAnswers(), veicoli, feriti, eta, urto, limite, manovra, uscita, ribaltato, luce, strada, incrocio})
+esito = assess(model, answers, {meta, ages, loc, now})
+// With no answers p sits on the threshold: no verdict until vehicles and casualties are known.
+pronto = veicoli !== null && feriti !== null
+LABELS = ({veicoli: "Vehicles involved", feriti: "Casualties", eta: "Age of the casualties",
+  urto: "Type of impact", limite: "Speed limit", manovra: "What the vehicles were doing",
+  uscita: "Leaving the road", luce: "Light", ribaltato: "Overturned vehicle",
+  strada: "Type of road", incrocio: "Junction"})
+num = (x) => x.toFixed(2)
+signed = (x) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(2)}`
+```
+
+```{ojs}
+//| echo: false
+//| output: false
+verdetto = html`<div>
+  <div class="govuk-panel ${esito.grave ? "govuk-panel--serious" : "govuk-panel--slight"}">
+    <h2 class="govuk-panel__title">${esito.grave ? "▲ Serious" : "▼ Slight"}</h2>
+    <div class="govuk-panel__body">Probability of a serious collision: <strong>${num(esito.p)}</strong></div>
+  </div>
+  <div class="action">
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">What to do now</h3>
+    ${esito.grave
+      ? html`<ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+          <li>Dispatch an ambulance as a <strong>Category 2</strong> emergency</li>
+          <li>Alert roads policing</li>
+          ${loc.urban ? "" : html`<li>Consider the air ambulance: rural location</li>`}
+        </ul>`
+      : html`<ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+          <li>Dispatch an ambulance as a <strong>Category 3</strong> response</li>
+          <li>Send police to manage the scene</li>
+        </ul>`}
+    <p class="govuk-body-s govuk-!-margin-top-2 govuk-!-margin-bottom-0">
+      Upgrade to <strong>Category 1</strong> at once if the caller reports someone not breathing, unconscious or bleeding
+      heavily. The model has never heard of any of these.</p>
+  </div>
+  <div class="meter" role="img"
+       aria-label="Probability ${num(esito.p)}, threshold ${meta.threshold}">
+    <div class="meter__fill" style="width: ${esito.p * 100}%"></div>
+    <div class="meter__threshold" style="left: ${meta.threshold * 100}%"></div>
+  </div>
+  <p class="govuk-body-s">Serious from ${meta.threshold} upwards</p>
+  <h3 class="govuk-heading-s">What moved the estimate</h3>
+  <ul class="govuk-list reasons">
+    ${esito.reasons.slice(0, 3).map((r) => html`<li><strong>${signed(r.delta)}</strong> ${LABELS[r.q]}</li>`)}
+  </ul>
+  <p class="govuk-body-s govuk-!-margin-bottom-0" style="color: #505a5f">
+    This estimate was produced by ${model.trees.length} decision trees, none of which has ever driven a car.
+  </p>
+</div>`
+```
+
+```{ojs}
+//| echo: false
+html`<div class="result">
+  ${pronto ? verdetto : html`<div class="govuk-inset-text govuk-!-margin-0">
+    Ask the caller about the vehicles and the casualties.
+    The model is patient. The caller may not be.</div>`}
+  <p class="govuk-body-s">Estimate based on ${esito.answered} of ${esito.total} answers.</p>
+</div>`
+```
+
+:::
+
+:::

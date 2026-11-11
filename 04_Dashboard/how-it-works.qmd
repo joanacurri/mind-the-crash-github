@@ -1,0 +1,101 @@
+---
+pagetitle: "How the estimate works – Mind the Crash"
+---
+
+```{ojs}
+//| echo: false
+//| output: false
+import { range } from "./js/govuk-inputs.js"
+import { dots } from "./js/dots.js"
+meta = FileAttachment("data/meta.json").json()
+scores = FileAttachment("data/scores.json").json()
+total = (a) => a.reduce((x, y) => x + y, 0)
+// Confusion matrix of the held-out set at threshold t: bins at or above t are flagged serious.
+confusion = (t) => {
+  const k = Math.round(t * scores.bins);
+  const tp = total(scores.serious.slice(k)), fn = total(scores.serious.slice(0, k));
+  const fp = total(scores.slight.slice(k)), tn = total(scores.slight.slice(0, k));
+  const n = tp + fn + fp + tn;
+  return {tp, fn, fp, tn, n, recall: tp / (tp + fn),
+          precision: tp + fp ? tp / (tp + fp) : 0, flagged: (tp + fp) / n};
+}
+fmt = (x) => x.toLocaleString("en-GB")
+per100 = (x) => Math.round(x * 100)
+base = confusion(meta.threshold)
+```
+
+```{ojs}
+//| echo: false
+html`<span class="govuk-caption-m">Road collision triage</span>
+<h1 class="govuk-heading-l">How the estimate works</h1>
+<p class="govuk-body-l">At the threshold of ${meta.threshold}, the tool catches
+<strong>${per100(base.recall)} of every 100</strong> serious collisions. The price is that
+${100 - per100(base.precision)} of every 100 Category 2 ambulances go to a collision that turns
+out to be slight.</p>`
+```
+
+```{=html}
+<h2 class="govuk-heading-m govuk-!-margin-top-6">Where to draw the line</h2>
+<p class="govuk-body">The model gives every call a probability. Above the threshold the call is
+treated as serious. Slide left and no serious collision is missed, because every call gets a
+Category 2 ambulance. Slide right and the ambulances stay free for the serious collisions the
+model no longer spots.</p>
+```
+
+```{ojs}
+//| echo: false
+viewof soglia = range("Threshold", {min: 0.02, max: 0.8, step: 0.001, value: meta.threshold,
+  format: (x) => x.toFixed(3)})
+```
+
+```{ojs}
+//| echo: false
+cm = confusion(soglia)
+html`<div class="tiles">
+  <div class="tile">
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Serious collisions caught</h3>
+    <div class="tile__figure">${per100(cm.recall)} <span class="govuk-body">of 100</span></div>
+    ${dots(per100(cm.recall), {title: `${fmt(cm.tp)} of ${fmt(cm.tp + cm.fn)} serious collisions flagged`})}
+  </div>
+  <div class="tile">
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Category 2 ambulances that were needed</h3>
+    <div class="tile__figure">${per100(cm.precision)} <span class="govuk-body">of 100</span></div>
+    ${dots(per100(cm.precision), {title: `${fmt(cm.tp)} of ${fmt(cm.tp + cm.fp)} flagged calls really serious`})}
+  </div>
+  <div class="tile">
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Calls sent as Category 2</h3>
+    <div class="tile__figure">${per100(cm.flagged)} <span class="govuk-body">of 100</span></div>
+    ${dots(per100(cm.flagged), {title: `${fmt(cm.tp + cm.fp)} of ${fmt(cm.n)} calls flagged serious`})}
+  </div>
+</div>
+<details class="govuk-details govuk-!-margin-top-4">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">Show the counts</span>
+  </summary>
+  <div class="govuk-details__text">
+    <table class="govuk-table counts">
+      <thead class="govuk-table__head"><tr class="govuk-table__row">
+        <th class="govuk-table__header"></th>
+        <th class="govuk-table__header govuk-table__header--numeric">Flagged serious</th>
+        <th class="govuk-table__header govuk-table__header--numeric">Flagged slight</th>
+      </tr></thead>
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row"><th class="govuk-table__header">Really serious</th>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${fmt(cm.tp)}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${fmt(cm.fn)}</td></tr>
+        <tr class="govuk-table__row"><th class="govuk-table__header">Really slight</th>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${fmt(cm.fp)}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">${fmt(cm.tn)}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>`
+```
+
+```{ojs}
+//| echo: false
+html`<h2 class="govuk-heading-m govuk-!-margin-top-6">How these figures were measured</h2>
+<p class="govuk-body">On ${fmt(base.n)} collisions held out from training, of which
+${fmt(base.tp + base.fn)} were serious. The threshold of ${meta.threshold} is the highest that
+still catches at least 75 serious collisions in 100.</p>`
+```

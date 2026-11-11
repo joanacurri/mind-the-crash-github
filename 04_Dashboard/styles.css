@@ -1,0 +1,184 @@
+/* Additions to GOV.UK Frontend for what the design system has no component for. */
+
+:root {
+  --navy: #012169;   /* Union Jack blue */
+  --red: #c8102e;    /* Union Jack red */
+  --page: #e9edf5;
+  --rule: #d5dbe8;
+}
+
+/* Page: wide, tinted, Union Jack header and footer. */
+.govuk-template__body { background: var(--page); }
+.govuk-width-container { max-width: 1480px; margin-left: auto; margin-right: auto; padding: 0 24px; }
+.govuk-header { background: var(--navy); }
+.govuk-header__container { border-bottom-color: var(--red); }
+.govuk-phase-banner { border-bottom-color: var(--rule); }
+.govuk-phase-banner__content__tag { background: var(--red); color: #fff; }
+.govuk-main-wrapper { padding-top: 20px; padding-bottom: 20px; }
+.govuk-footer { background: var(--navy); color: #fff; border-top: 6px solid var(--red); }
+.govuk-footer .govuk-body-s { color: #fff; }
+
+/* The navy bar holds both the call details and the new-call button. */
+.call-head {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
+  padding: 14px 20px; background: var(--navy);
+}
+.call-head > .cell:first-child { flex: 1; }
+.call-bar {
+  display: flex; flex-wrap: wrap; gap: 8px 48px; color: #fff;
+  font-family: "GDS Transport", arial, sans-serif; font-size: 1.5rem;
+}
+.call-bar__key { display: block; font-size: 1rem; color: #c9d3ea; }
+.call-bar__note { font-size: 1rem; color: #c9d3ea; }
+.btn-newcall {
+  margin: 0; background: var(--red); box-shadow: 0 2px 0 #000;
+}
+.btn-newcall:hover { background: #a00d25; }
+
+.call-layout {
+  display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start;
+}
+.call-result { position: sticky; top: 16px; }
+@media (max-width: 900px) {
+  .call-layout { grid-template-columns: 1fr; }
+  .call-result { position: static; order: -1; }
+}
+
+.box { background: #fff; padding: 16px 20px; margin-bottom: 16px; border-top: 4px solid var(--navy); }
+.box .govuk-form-group { margin-bottom: 16px; }
+.box .govuk-details { margin: 16px 0 0; }
+
+/* A question per row: legend on the left, answers on one line beside it. */
+.q-row { margin-bottom: 0 !important; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.q-row .govuk-fieldset::after { content: ""; display: block; clear: both; }
+.q-row .govuk-fieldset__legend { float: left; width: 260px; margin: 0; padding: 8px 16px 0 0; }
+.q-row .govuk-hint, .q-row .govuk-radios { margin-left: 276px; }
+.q-row .govuk-hint { margin-bottom: 0; padding-top: 8px; font-size: 1rem; }
+.govuk-radios--inline .govuk-radios__item { margin-right: 12px; }
+.govuk-radios--inline .govuk-radios__label { white-space: nowrap; }
+@media (max-width: 700px) {
+  .q-row .govuk-fieldset__legend { float: none; width: auto; }
+  .q-row .govuk-hint, .q-row .govuk-radios { margin-left: 0; }
+}
+
+/* Label centred over its control, on one line. */
+.counter-group { display: flex; flex-wrap: wrap; gap: 12px 40px; }
+.counter {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  text-align: center;
+}
+.counter__label { margin-bottom: 5px; white-space: nowrap; }
+.counter__row { display: flex; align-items: center; gap: 10px; }
+.counter__btn { margin: 0; min-width: 44px; box-shadow: 0 2px 0 #929191; }
+.counter__value {
+  font-family: "GDS Transport", arial, sans-serif; font-weight: 700; font-size: 1.5rem;
+  min-width: 2ch; text-align: center;
+}
+
+/* Result: the verdict says Serious or Slight in words; colour only repeats it. */
+.result { background: #fff; padding: 16px; border-top: 4px solid var(--red); }
+.result .govuk-inset-text { border-left-color: var(--red); }
+.govuk-panel--serious { background: var(--red); color: #fff; }
+.govuk-panel--slight { background: var(--navy); color: #fff; }
+.result .govuk-panel { padding: 20px 15px; margin-bottom: 15px; }
+.result .govuk-panel__title { font-size: 2.5rem; margin-bottom: 10px; }
+.result .govuk-panel__body { font-size: 1.1875rem; }
+
+.meter { position: relative; height: 12px; background: #f3f2f1; margin: 10px 0 5px; }
+.meter__fill { height: 100%; background: var(--navy); }
+.meter__threshold {
+  position: absolute; top: -6px; bottom: -6px; border-left: 3px solid var(--red);
+}
+
+.action { padding: 12px 15px; margin-bottom: 15px; background: #f3f5fa; border-left: 5px solid var(--navy); }
+.reasons { font-variant-numeric: tabular-nums; }
+.feedback { border-top: 1px solid var(--rule); padding: 20px 0; margin-top: 10px; }
+.feedback__btn { margin: 0 0 0 10px; }
+
+/* minimal: true drops Quarto's stylesheet, which normally hides OJS source and helper cells. */
+.hidden, .quarto-ojs-hide { display: none !important; }
+.cell, .cell-output-display { margin: 0; }
+
+/* How the estimate works */
+.range__row { display: flex; align-items: center; gap: 16px; max-width: 640px; }
+.range__input { flex: 1; accent-color: var(--red); }
+.range__value {
+  font-family: "GDS Transport", arial, sans-serif; font-weight: 700; font-size: 1.5rem;
+  min-width: 4ch; font-variant-numeric: tabular-nums;
+}
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.tile { background: #fff; padding: 16px 20px; border-top: 4px solid var(--navy); }
+.tile__figure {
+  font-family: "GDS Transport", arial, sans-serif; font-weight: 700; font-size: 3rem; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.dots { display: block; margin-top: 12px; }
+.dot { fill: #d5dbe8; }
+.dot--on { fill: var(--red); }
+.counts { font-variant-numeric: tabular-nums; }
+
+/* What the model listens to: labelled bars, so no axis or grid. */
+.hbar, .dbar {
+  display: grid; grid-template-columns: 300px minmax(0, 1fr) 110px; gap: 12px; align-items: center;
+  padding: 4px 0; font-family: "GDS Transport", arial, sans-serif; font-size: 1rem;
+}
+.hbar__value { font-variant-numeric: tabular-nums; }
+.hbar__track, .dbar__track { position: relative; height: 18px; }
+.hbar__bar { display: block; height: 100%; background: #505a5f; border-radius: 0 4px 4px 0; }
+.hbar__bar--auto { background: #b1b4b6; }
+.dbar__track { border-left: 0; }
+.dbar__track::before {
+  content: ""; position: absolute; left: 50%; top: -4px; bottom: -4px; border-left: 1px solid #b1b4b6;
+}
+.dbar__bar { position: absolute; top: 0; bottom: 0; }
+.dbar__bar--up { left: 50%; background: var(--red); border-radius: 0 4px 4px 0; }
+.dbar__bar--down { right: 50%; background: #1d70b8; border-radius: 4px 0 0 4px; }
+@media (max-width: 700px) {
+  .hbar, .dbar { grid-template-columns: 1fr 90px; }
+  .hbar__label { grid-column: 1 / -1; }
+}
+
+/* Where collisions turn serious */
+.map-layout {
+  display: grid; grid-template-columns: 340px 560px minmax(0, 1fr); gap: 16px; align-items: start;
+}
+.map-side, .map-main, .map-table { background: #fff; padding: 16px 20px; border-top: 4px solid var(--navy); }
+.map-table { max-height: 860px; overflow-y: auto; padding-top: 0; }
+/* Heading and column names stay in view while the table scrolls. */
+.map-table h2 {
+  position: sticky; top: 0; z-index: 1; height: 52px; box-sizing: border-box; margin: 0;
+  padding-top: 16px; background: #fff;
+}
+.map-table thead th { position: sticky; top: 52px; z-index: 1; background: #fff; box-shadow: inset 0 -1px 0 #b1b4b6; }
+.hexmap { display: block; width: 100%; }
+.hexmap polygon { stroke: #fff; stroke-width: .018; }
+.hexmap polygon:hover { stroke: #0b0c0c; stroke-width: .03; }
+.map-side .q-row { border-bottom: 0; }
+.map-side .q-row .govuk-fieldset__legend { float: none; width: auto; padding: 0 0 8px; }
+.map-side .q-row .govuk-radios { margin-left: 0; }
+.map-side .govuk-radios--inline .govuk-radios__item { float: none; display: flex; margin: 0 0 8px; }
+.map-side .govuk-radios--inline .govuk-radios__label { white-space: normal; }
+.legend { margin-top: 12px; }
+.legend__row { display: flex; align-items: center; gap: 8px; padding: 2px 0;
+  font-family: "GDS Transport", arial, sans-serif; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.legend__swatch { width: 24px; height: 16px; border-radius: 2px; flex: none; }
+@media (max-width: 1300px) { .map-layout { grid-template-columns: 340px minmax(0, 1fr); } }
+@media (max-width: 900px) { .map-layout { grid-template-columns: 1fr; } }
+.hexmap-box { position: relative; }
+.hextip {
+  position: absolute; z-index: 2; width: 220px; padding: 8px 10px; pointer-events: none;
+  background: #fff; border: 3px solid var(--navy); border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+  font-family: "GDS Transport", arial, sans-serif; font-size: .875rem; line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+.hextip strong { display: block; font-size: 1rem; }
+.hextip__area { display: block; color: #505a5f; margin-bottom: 6px; }
+.hextip__note { display: block; color: #505a5f; margin-top: 6px; }
+.hextip[hidden] { display: none; }
+.hexmap--focus polygon { opacity: .2; }
+.hexmap--focus polygon.is-lit { opacity: 1; stroke: var(--navy); stroke-width: .03; }
+.map-table tr[data-area]:hover { background: #f3f5fa; cursor: default; }
+
+/* Project name in place of the GOV.UK logo */
+.mtc-brand { color: #fff; font-weight: 700; font-size: 1.5rem; line-height: 30px; }
