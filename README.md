@@ -4,6 +4,8 @@ Classifying the severity of road collisions in the United Kingdom with STATS19 d
 
 Group project for the *Statistical Modelling and Machine Learning* course.
 
+**[Try the live demo →](https://joanacurri.github.io/mind-the-crash-github/take-a-call.html)**
+
 ## Goal
 
 We put ourselves in the shoes of the emergency call centre: when the call comes in, someone has to decide how much help to send without knowing how serious the collision is. The model estimates whether a collision is **serious** (Fatal + Serious) or **slight**, using only the information the caller can give straight away. The error to avoid is classifying a serious collision as slight.
@@ -77,7 +79,11 @@ Technical_docs/   notes on saving and loading the models
 
 ## Dashboard
 
+Try it online: **[live demo](https://joanacurri.github.io/mind-the-crash-github/take-a-call.html)**.
+
 Four pages: the simulator for the call handler, how the threshold works, what weighs most in the estimate, and the map of where collisions turn serious. The model runs in the browser and gives the same probabilities as the Python model.
+
+To run it locally:
 
 - **Windows:** double-click `04_Dashboard/Open the simulator.bat`
 - **Mac/Linux:** `python3 04_Dashboard/serve.py`
